@@ -1,0 +1,43 @@
+﻿<Window x:Class="RevitServerExport.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RevitServerExport"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.Resources>
+            <local:PathFinderViewer x:Key="key"/>
+        </Grid.Resources>
+        <Grid.DataContext>
+            <Binding Source="{StaticResource key}"></Binding>
+        </Grid.DataContext>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.15*"></RowDefinition>
+            <RowDefinition Height="0.85*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="0.33*"></ColumnDefinition>
+            <ColumnDefinition Width="0.33*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBox 
+            x:Name="ip" Grid.Row="0" Grid.Column="0" 
+            Text="{Binding Path.Ip}" VerticalAlignment="Center" HorizontalAlignment="Stretch"><!--DataContext="{Binding Path=}"--> 
+        </TextBox>
+        <ComboBox x:Name="version" Grid.Row="0" Grid.Column="1"  ItemsSource="{Binding Path}" SelectedItem="{Binding Path.Version}"></ComboBox>
+        <Button x:Name="request" Grid.Row="0" Grid.Column="2"></Button>
+         <TreeView Grid.Row="1" Grid.Column="0"   Background="Red" FontSize="20" x:Name="tree" Margin="0,0,0,0" Width="Auto" >
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate  DataType="{x:Type local:Node}" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding IsChecked}" Uid="{Binding Id}" Background="#522582" PreviewMouseLeftButtonDown="OnMouseLeftButtonDown"/>
+                        <TextBlock Text="{Binding Text}"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </Grid>
+</Window>
