@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace RevitServerExport
 {
     class PathFinder : INotifyPropertyChanged
     {
-		public PathFinder(string ip, string version, string extra = "\\contents")
+		public PathFinder()
 		{
-			this.Version = version;
-			this.Ip = ip;
-			this.Extra = extra;
-			OnPropertyChanged("");
+			OnPropertyChanged();
 		}
 		private Dictionary<string, string> KeysValues = new Dictionary<string, string>()
         {
@@ -49,45 +50,63 @@ namespace RevitServerExport
 
             }
         }
-    #warning Implement combination of path to server
-        private string ip = "192.168.1.10";
+        private string ip = Properties.Settings.Default.ServerIP;
         public string Ip
         {
-            get { return ip; }
+            get
+			{
+				return ip;
+			}
             set
             {
-                ip = value;
+				
+				if (IPAddress.TryParse(value, out IPAddress ipp))
+				{
+					ip = ipp.ToString();
+					Properties.Settings.Default.ServerIP = ipp.ToString();
+				}
+				else
+					{ MessageBox.Show("Ip-адрес введен некорректно"); }
 				OnPropertyChanged("Text");
-    #warning regex for proper ip or URL
-            }
+			}
         }
 
-        private string version = "/RevitServerAdminRESTService2019/AdminRESTService.svc";
+		private string version;//= "/RevitServerAdminRESTService2019/AdminRESTService.svc";
         public string Version
         {
-            get { return version; }
+            get { return version;}
             set
 			{
 				version = KeysValues[value];
 				OnPropertyChanged("SelectedItem");
 			}
         }
-        private string extra = "/|/contents";
-        public string Extra
-        {
-            get { return extra; }
-            set { extra = value; }
-    #warning regex for proper extras
 
-        }
-        private string completePath;
-        public string CompletePath
-        {
-            get { return completePath; }
-            set { completePath = this.ip + this.version + this.extra; }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(String info)
+		private string destination = Properties.Settings.Default.Destination;
+		public string Destination
+		{
+			get { return destination; }
+			set
+			{
+				destination = value;
+				Properties.Settings.Default.Destination = value;
+				OnPropertyChanged("Destination");
+			}
+		}
+		private string revitRoot = @"C:\Program Files\Autodesk\Revit 2019\";
+		public string RevitRoot
+		{
+			get { return revitRoot; }
+			set {
+				Regex reg = new Regex(@"^[a-zA-Z]:\\[\\\S|*\S]?.*$");
+				if (reg.IsMatch(value))
+					revitRoot = value;
+				OnPropertyChanged("Text");
+			}
+			
+		}
+		public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string info="")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
         }
