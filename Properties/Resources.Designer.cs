@@ -59,14 +59,5 @@ namespace RevitServerExport.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to яяяяNWindowsBase, Version=3.0.0.0, Culture=Neutral, PublicKeyToken=31bf3856ad364e35™System.Collections.ObjectModel.ObservableCollection`1[[RevitServerExport.Node, RevitServerExport, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]_monitorCollection`1+items§System.Collections.ObjectModel.ObservableCollection`1+SimpleMonitor[[RevitServerExport.Node, RevitServerExport, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]…System.Collections.Generic.List`1[[RevitSe [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string tree {
-            get {
-                return ResourceManager.GetString("tree", resourceCulture);
-            }
-        }
     }
 }

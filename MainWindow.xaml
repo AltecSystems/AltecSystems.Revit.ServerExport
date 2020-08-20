@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RevitServerExport"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1040" Width="570" ResizeMode="NoResize" WindowStartupLocation="Manual" Left="0" Top="0">
+        Title="MainWindow" Height="700" Width="500" WindowStartupLocation="CenterScreen" Left="0" Top="0"
+        FontSize="14" MinWidth="400" MinHeight="500" >
     <Window.Resources>
         <!--<Style x:Key="Altec">
             <Setter Property="Control.FontFamily" Value="Verdana" />
@@ -16,7 +17,7 @@
             <Setter Property="Control.Margin" Value="10" />
         </Style>-->
     </Window.Resources>
-    <Grid>
+    <Grid Margin="10">
         <Grid.Resources>
             <local:PathFinderViewer x:Key="path"/>
         </Grid.Resources>
@@ -25,89 +26,106 @@
             <Binding Source="{StaticResource path}"></Binding>
         </Grid.DataContext>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.07*"></RowDefinition>
-            <RowDefinition Height="0.055*"></RowDefinition>
-            <RowDefinition Height="0.85*"></RowDefinition>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+        
+        
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130*"></ColumnDefinition>
-                <ColumnDefinition Width="235*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            
+            <Border Grid.Column="0" Grid.ColumnSpan="2" 
+                    BorderThickness="0,0,0,1" 
+                    BorderBrush="Gray"/>
+
+            <StackPanel>                
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="0" 
+                        Grid.Column="0">
+                
+                <Label Content="Ip:" />
+                
+                <TextBox DataContext="{Binding Path=PathFinders}"
+                         Text="{Binding Path=Ip}"
+                         VerticalAlignment="Top"
+                         HorizontalAlignment="Center"
+                         MaxWidth="120"
+                         MaxLength="30"/>
+
+            </StackPanel>
+                
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                <Label Content="Версия:" HorizontalContentAlignment="Left"/>
+                <ComboBox VerticalAlignment="Bottom"
+                          DataContext="{Binding Path=PathFinders}" 
+                          ItemsSource="{Binding Path=SupportedVersionsKeys}"
+                          SelectedItem="{Binding Path=Version}"
+                          SelectedValue="2019"
+                          HorizontalContentAlignment="Center"/>
+            </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center" >
+                <Button Content="Обновить"
+                        Command="{Binding SyncCommand}"
+                        Width="100" Margin="0,0,0,5" />
+
+                <Button Width="100"
+                        Content="Выгрузить"
+                        Command="{Binding ExportCommand}"/>
+
+            </StackPanel>            
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" MinWidth="130" />
+                <ColumnDefinition Width="1*" MinWidth="270"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.5*"></RowDefinition>
-                <RowDefinition Height="0.5*"></RowDefinition>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0,0,1,1" BorderBrush="Gray">
-            </Border>
-            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                <TextBlock Text="Ip: " FontSize="18" Margin="5,0,10,0" Padding="0,3,0,0">
-                </TextBlock>
-                <TextBox 
-                x:Name="ip" Grid.Row="0" Grid.Column="0" 
-                DataContext="{Binding Path=pathFinders}"
-                Text="{Binding Path=Ip}" VerticalAlignment="Top" HorizontalAlignment="Center"
-                    FontSize="18" MaxWidth="120" MaxLength="30">
-                </TextBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
-                <Label Content="Версия: " FontSize="18" HorizontalContentAlignment="Center"></Label>
-                <ComboBox x:Name="version"  VerticalAlignment="Bottom"
-                      DataContext="{Binding Path=pathFinders}" 
-                      ItemsSource="{Binding Path=SupportedVersionsKeys}"
-                      SelectedItem="{Binding Path=Version}"
-                      SelectedValue="2019"
-                      FontSize="18" HorizontalContentAlignment="Center">
-                </ComboBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left">
-                <Button Margin="0,0,10,0" x:Name="request" 
-                    Content="Обновить"
-                    Command="{Binding SyncCommand}" Width="150">
-                </Button>
-                <Button
-                     Width="150"
-                    Content="Выгрузить"
-                    Command="{Binding ExportCommand}">
-                </Button>
-            </StackPanel>
-            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="fileDialog"  Content="Cохранить в: " HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Left" Command="{Binding Path=DestinCommand}">
-                    
-                </Button>
-                <TextBox Grid.Row="1" Grid.Column="1" BorderThickness="0" x:Name="destin" 
-                DataContext="{Binding Path=pathFinders}" 
-                Text="{Binding Path=Destination}" VerticalAlignment="Center" HorizontalAlignment="Stretch" FontSize="18" Margin="0,1,0,0">
-                </TextBox>
-            </StackPanel>
+
+            <Label Content="Путь на сервере" 
+                   Grid.Column="0"/>
+            <TextBox Text="{Binding Root}"
+                     Grid.Column="2"/>
+            
+            <Button Content="Cохранить в"
+                    HorizontalAlignment="Left" 
+                    Command="{Binding Path=DestinCommand}"
+                    Grid.Row="1"/>            
+            <TextBox DataContext="{Binding Path=PathFinders}"
+                     Text="{Binding Path=Destination}" 
+                     Grid.Row="1" Grid.Column="2"/>
+            
+            <Label Content="Путь Revit"
+                   Grid.Row="2"/>            
+            <TextBox DataContext="{Binding Path=PathFinders}"
+                     Text="{Binding Path=RevitRoot}"
+                     Grid.Row="2" Grid.Column="2"/>
         </Grid>
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" >
-            <Label Content="Путь&#x0a;Revit" FontSize="18" Margin="1"></Label >
-            <TextBox Grid.Row="1" Grid.Column="1" BorderThickness="0"
-                x:Name="revit" 
-                DataContext="{Binding Path=pathFinders}" 
-                Text="{Binding Path=RevitRoot}" VerticalAlignment="Center" HorizontalAlignment="Stretch" FontSize="18" Margin="0,1,0,0">
-            </TextBox>
-        </StackPanel>
-        <TreeView x:Name="tree" 
-                   Grid.Row="2" Grid.Column="0"   
-                   FontSize="18"  
-                   Width="Auto"
-                   ItemsSource="{Binding Path=Nodes}" 
-                  TreeViewItem.Expanded="Tree_Expanded"
+        
+        
+        <TreeView Grid.Row="2" Grid.Column="0" 
+                  Width="Auto"
+                  ItemsSource="{Binding Path=Nodes}" 
                   BorderThickness="0,1,0,0"
                   BorderBrush="Gray"
                   Margin="0,2,0,0">
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate 
-                    ItemsSource="{Binding Path=Children}">
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding IsChecked}" Uid="{Binding Id}" Background="#522582" PreviewMouseLeftButtonDown="OnMouseLeftButtonDown"/>
+                        <CheckBox IsChecked="{Binding IsChecked}"
+                                  Uid="{Binding Id}"
+                                  Background="#522582" 
+                                  PreviewMouseLeftButtonDown="OnMouseLeftButtonDown"/>
                         <TextBlock Text="{Binding Text}"/>
-
                     </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>

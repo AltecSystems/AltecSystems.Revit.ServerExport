@@ -8,5 +8,8 @@
     <Setting Name="Destination" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\\data</Value>
     </Setting>
+    <Setting Name="Root" Type="System.String" Scope="User">
+      <Value Profile="(Default)">E:\ProgramData\Revit server</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
