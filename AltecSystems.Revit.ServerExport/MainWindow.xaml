@@ -1,12 +1,133 @@
-﻿<Window x:Class="AltecSystems.Revit.ServerExport.MainWindow"
+﻿<Window x:Class="AltecSystems.Revit.ServerExport.ServerExportView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AltecSystems.Revit.ServerExport"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Server Export" 
+        Height="550" 
+        d:DataContext="{d:DesignInstance local:ServerExportViewModel}"
+        Width="600">
 
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="defaultLabelStyle" TargetType="Label">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Width" Value="120" />
+            </Style>
+            <Style x:Key="defaultComboBoxStyle" TargetType="ComboBox">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Width" Value="120" />
+            </Style>
+            <Style x:Key="defaultTextBoxStyle" TargetType="TextBox">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="defaultButtonStyle" TargetType="Button">
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Padding" Value="2" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel>
+                <DockPanel>
+                    <Label
+                        Style="{StaticResource defaultLabelStyle}"
+                        Content="Путь на сервере:"/>
+                    <TextBox 
+                        Style="{StaticResource defaultTextBoxStyle}"
+                        Text="{Binding Settings.RevitServerRootPath}"/>
+                </DockPanel>
+                <DockPanel>
+                    <Label 
+                        Content="Cохранить в:"
+                        Style="{StaticResource defaultLabelStyle}"/>
+                    <TextBox 
+                        Style="{StaticResource defaultTextBoxStyle}"
+                        Text="{Binding Settings.SavePath}"/>
+                </DockPanel>
+                <DockPanel>
+                    <Label 
+                        Style="{StaticResource defaultLabelStyle}"
+                        Content="Адрес сервера" />
+                    <TextBox 
+                        Text="{Binding Settings.ServerHost}"
+                        Style="{StaticResource defaultTextBoxStyle}"/>
+                </DockPanel>
+                <DockPanel>
+                    <Label 
+                        Content="Версия:" 
+                        Style="{StaticResource defaultLabelStyle}"/>
+                    <ComboBox 
+                        HorizontalAlignment="Left"
+                        VerticalContentAlignment="Center"
+                        Style="{StaticResource defaultComboBoxStyle}"
+                        ItemsSource="{Binding Settings.ServerVersion}"
+                        SelectedItem="{Binding Settings.CurrentSelectionServerVersion}"
+                        SelectedValue="2019"/>
+                </DockPanel>
+            </StackPanel>
+        </Grid>
+        <Border 
+            BorderBrush="Black"
+            BorderThickness="0,1,0,0"
+            Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <Button 
+                    Style="{StaticResource defaultButtonStyle}"
+                    Content="Загрузить Модели"
+                    Command="{Binding LoadModelCommand}"/>
+                <Button 
+                    Style="{StaticResource defaultButtonStyle}"
+                    Content="Выгрузить"
+                    Command="{Binding ExportCommand}"/>
+            </StackPanel>
+        </Border>
+        <Grid Grid.Row="2" Visibility="{Binding Progress.IsVisibility}">
+            <ProgressBar 
+                Maximum="{Binding Progress.Max}"
+                Value="{Binding Progress.CurrentProgress}"
+                Height="20" 
+                Margin="5" 
+                Name="pbStatus"
+                IsIndeterminate="{Binding Progress.IsIndeterminate}" />
+            <TextBlock 
+                Text="{Binding Progress.StatusText}"
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center" />
+        </Grid>
+        
+        <Border 
+            BorderBrush="Black"
+            BorderThickness="0,1,0,0"
+            Grid.Row="3">
+            <TreeView 
+                BorderBrush="{x:Null}"
+                BorderThickness="0"
+                ItemsSource="{Binding Path=Nodes}" 
+                Margin="5">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox 
+                            IsChecked="{Binding  IsChecked}"
+                            Uid="{Binding Id}"/>
+                            <TextBlock Text="{Binding Text}"/>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </Border>
+       
     </Grid>
 </Window>
