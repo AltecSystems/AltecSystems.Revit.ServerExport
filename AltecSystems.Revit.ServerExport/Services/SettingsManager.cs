@@ -68,7 +68,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
                     if (string.IsNullOrWhiteSpace(value))
                     {
-                        return Array.Empty<Node>();
+                        return new List<Node>();
                     }
                     var settings = JsonConvert.DeserializeObject<IEnumerable<Node>>(value);
                     return settings;
@@ -76,7 +76,7 @@ namespace AltecSystems.Revit.ServerExport.Services
             }
             catch (Exception ex)
             {
-                return Array.Empty<Node>();
+                return new List<Node>();
             }
         }
 

@@ -14,6 +14,7 @@ namespace AltecSystems.Revit.ServerExport
         public ICommand LoadModelCommand { get; }
 
         private readonly ModelLoader _loader;
+        private readonly ExportModel _export;
 
         public ObservableCollection<Node> Nodes { get; set; }
 
@@ -27,14 +28,20 @@ namespace AltecSystems.Revit.ServerExport
         {
             _settingsManager = new SettingsManager();
             Settings = _settingsManager.GetSettings();
-            Nodes = new ObservableCollection<Node>(_settingsManager.GetCasheNodes());
+            Nodes = new ObservableCollection<Node>(); //new ObservableCollection<Node>(_settingsManager.GetCasheNodes());
             DestinCommand = new RelayCommand(null,null);
-            ExportCommand = new RelayCommand(null, null);
+            ExportCommand = new RelayCommand(Export, null);
             LoadModelCommand = new RelayCommand(StartLoadModel, null);
             _loader = new ModelLoader();
+            _export = new ExportModel();
             Progress = new ProgressModel();
           
             Settings.PropertyChanged += Settings_PropertyChanged;
+        }
+
+        private void Export(object obj)
+        {
+            Export2.Export();
         }
 
         private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -50,7 +57,7 @@ namespace AltecSystems.Revit.ServerExport
             Progress.IsIndeterminate = true;
             await LoadModelAsync(Nodes,rootfolder);
             Progress.IsVisibility = System.Windows.Visibility.Collapsed;
-            _settingsManager.SaveCache(Nodes);
+            // _settingsManager.SaveCache(Nodes);
         }
         
 
@@ -84,12 +91,6 @@ namespace AltecSystems.Revit.ServerExport
                 Progress.CurrentProgress++;
                 await LoadModelAsync(node.Children, newurl);
             }
-
-            //foreach (Node item in nodes)
-            //{
-            //    foreach (var child in item.Children)
-            //        child.Parent = item;
-            //}
         } 
 
         //public ICommand DestinCommand
