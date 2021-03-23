@@ -5,7 +5,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AltecSystems.Revit.ServerExport.Services
@@ -13,6 +12,7 @@ namespace AltecSystems.Revit.ServerExport.Services
     internal class RestApiModelLoader : IModelLoader
     {
         private readonly SettingsModel _settings;
+
         public RestApiModelLoader(SettingsModel settings)
         {
             _settings = settings;
@@ -58,7 +58,7 @@ namespace AltecSystems.Revit.ServerExport.Services
         {
             var root = "http://" + _settings.ServerHost + _settings.RestUrl;
             var rootfolder = root + "/|";
-            await LoadModelAsync(nodes,null, rootfolder, progress);
+            await LoadModelAsync(nodes, null, rootfolder, progress);
         }
 
         private async Task LoadModelAsync(ObservableCollection<Node> nodes, Node parent, string url, ProgressModel progress)
@@ -89,7 +89,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
                 nodes.Add(node);
                 progress.CurrentProgress++;
-                await LoadModelAsync(node.Children,node ,newurl, progress);
+                await LoadModelAsync(node.Children, node, newurl, progress);
             }
         }
     }

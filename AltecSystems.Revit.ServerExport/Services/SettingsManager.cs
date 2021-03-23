@@ -21,7 +21,7 @@ namespace AltecSystems.Revit.ServerExport.Services
         public void SaveSettings(SettingsModel settings)
         {
             var value = JsonConvert.SerializeObject(settings);
-            using (var stream = new StreamWriter(_pathFileSettings, false,Encoding.Default))
+            using (var stream = new StreamWriter(_pathFileSettings, false, Encoding.Default))
             {
                 stream.Write(value);
             }
@@ -94,7 +94,7 @@ namespace AltecSystems.Revit.ServerExport.Services
         {
             if (!Directory.Exists(_pathFolder))
             {
-               Directory.CreateDirectory(_pathFolder);
+                Directory.CreateDirectory(_pathFolder);
             }
         }
     }

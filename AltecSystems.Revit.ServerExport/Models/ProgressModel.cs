@@ -6,6 +6,7 @@ namespace AltecSystems.Revit.ServerExport.Models
     internal class ProgressModel : NotifyPropertyChangedBase
     {
         private int _max;
+
         public int Max
         {
             get => _max; set
@@ -16,6 +17,7 @@ namespace AltecSystems.Revit.ServerExport.Models
         }
 
         private int _currentProgress;
+
         public int CurrentProgress
         {
             get => _currentProgress; set
@@ -26,6 +28,7 @@ namespace AltecSystems.Revit.ServerExport.Models
         }
 
         private bool _isIndeterminate;
+
         public bool IsIndeterminate
         {
             get => _isIndeterminate; set
@@ -45,6 +48,5 @@ namespace AltecSystems.Revit.ServerExport.Models
                 return IsIndeterminate ? "Ожидание загрузки" : $"Загружено {CurrentProgress} из {Max}";
             }
         }
-
     }
 }

@@ -3,7 +3,7 @@ using System;
 
 namespace AltecSystems.Revit.ServerExport.Utils
 {
-   internal static class SessionTokenGenerator
+    internal static class SessionTokenGenerator
     {
         public static ServiceSessionToken CreateServiceSessionToken()
         {

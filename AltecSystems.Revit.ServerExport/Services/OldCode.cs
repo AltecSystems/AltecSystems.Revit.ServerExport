@@ -84,7 +84,6 @@
 //			return Path.Combine(modelIdentity.IdentityGUID.GUID.ToString(), fileName);
 //		}
 
-
 //		public static ModelIdentity IdentifyModel(ServiceSessionToken sessionToken, string modelPath, bool bUsedForAccess, string hostNode)
 //		{
 //			IClientProxy<IModelService> bufferedProxy = GetBufferedProxy(hostNode);
@@ -142,7 +141,6 @@
 //			bool flag = false;
 //			try
 //			{
-
 //				//IClientProxy<IModelService> clientProxy = ((ServerInfo.ConnectionState != ServerInfo.ConnectionStateEnum.Failover && !string.IsNullOrWhiteSpace(acceleratorNode) && !acceleratorNode.Equals(hostNode, StringComparison.CurrentCultureIgnoreCase)) ? GetRoutedProxy(acceleratorNode, hostNode) : GetStreamedProxy(hostNode));
 //				IClientProxy<IModelService> clientProxy = GetStreamedProxy(hostNode);
 //				//IClientProxy<IModelService> clientProxy = GetRoutedProxy(acceleratorNode, hostNode);
@@ -162,7 +160,6 @@
 //			{
 //				if (fileDownloadMessageStream.Stream == null)
 //				{
-
 //					//throw new CommunicationException("Null stream returned");
 //					throw new Exception();
 //				}

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace AltecSystems.Revit.ServerExport.Interface
 {
-    interface IModelLoader
+    internal interface IModelLoader
     {
-        Task LoadModelAsync(ObservableCollection<Node> nodes,  ProgressModel progress);
+        Task LoadModelAsync(ObservableCollection<Node> nodes, ProgressModel progress);
     }
 }

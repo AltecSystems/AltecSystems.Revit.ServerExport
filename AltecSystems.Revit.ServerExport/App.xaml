@@ -4,6 +4,5 @@
              xmlns:local="clr-namespace:AltecSystems.Revit.ServerExport"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>

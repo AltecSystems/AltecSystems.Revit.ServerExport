@@ -6,7 +6,6 @@ namespace AltecSystems.Revit.ServerExport
     {
         public ServerExportView()
         {
-            
             DataContext = new ServerExportViewModel();
             InitializeComponent();
         }

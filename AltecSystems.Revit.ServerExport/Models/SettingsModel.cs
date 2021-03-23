@@ -1,5 +1,4 @@
 ﻿using AltecSystems.Revit.ServerExport.Command;
-using System;
 using System.Collections.Generic;
 
 namespace AltecSystems.Revit.ServerExport.Models
@@ -9,6 +8,7 @@ namespace AltecSystems.Revit.ServerExport.Models
         Rest = 0,
         Proxy = 1
     }
+
     internal class SettingsModel : NotifyPropertyChangedBase
     {
         private string _revitServerRootPath;
@@ -18,7 +18,7 @@ namespace AltecSystems.Revit.ServerExport.Models
         public string RevitServerRootPath { get => _revitServerRootPath; set => SetField(ref _revitServerRootPath, value, nameof(RevitServerRootPath)); }
         public string SavePath { get => _savePath; set => SetField(ref _savePath, value, nameof(SavePath)); }
         public string ServerHost { get => _serverHost; set => SetField(ref _serverHost, value, nameof(ServerHost)); }
-        
+
         public List<string> ServerVersion { get; } = new List<string> { "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019" };
 
         public Dictionary<string, string> RestUrls { get; } = new Dictionary<string, string>()
@@ -64,6 +64,5 @@ namespace AltecSystems.Revit.ServerExport.Models
             get { return LoaderType == LoaderType.Rest; }
             set { LoaderType = value ? LoaderType.Rest : LoaderType; }
         }
-
     }
 }

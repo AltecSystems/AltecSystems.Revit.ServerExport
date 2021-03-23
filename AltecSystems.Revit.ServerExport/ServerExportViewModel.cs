@@ -1,10 +1,7 @@
 ﻿using AltecSystems.Revit.ServerExport.Command;
 using AltecSystems.Revit.ServerExport.Models;
 using AltecSystems.Revit.ServerExport.Services;
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace AltecSystems.Revit.ServerExport
@@ -27,24 +24,24 @@ namespace AltecSystems.Revit.ServerExport
         {
             _settingsManager = new SettingsManager();
             Settings = _settingsManager.GetSettings();
-            Nodes = new ObservableCollection<Node>(); 
-            DestinCommand = new RelayCommand(null,null);
+            Nodes = new ObservableCollection<Node>();
+            DestinCommand = new RelayCommand(null, null);
             ExportCommand = new RelayCommand(Export, null);
             LoadModelCommand = new RelayCommand(StartLoadModelAsync, null);
             Progress = new ProgressModel();
-          
+
             Settings.PropertyChanged += Settings_PropertyChanged;
         }
 
         private void Export(object obj)
         {
             var t = "";
-           //Export2.Export();
+            //Export2.Export();
         }
 
         private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-           _settingsManager.SaveSettings(Settings);   
+            _settingsManager.SaveSettings(Settings);
         }
 
         private async void StartLoadModelAsync(object commandParam)

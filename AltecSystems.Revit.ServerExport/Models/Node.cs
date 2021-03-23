@@ -10,6 +10,7 @@ namespace AltecSystems.Revit.ServerExport.Models
         {
             Id = Guid.NewGuid().ToString();
         }
+
         public ObservableCollection<Node> Children { get; set; } = new ObservableCollection<Node>();
         public Node Parent { get; set; }
 
@@ -31,6 +32,7 @@ namespace AltecSystems.Revit.ServerExport.Models
                 OnPropertyChanged(nameof(IsChecked));
             }
         }
+
         public string Text
         {
             get { return text; }
@@ -40,6 +42,7 @@ namespace AltecSystems.Revit.ServerExport.Models
                 OnPropertyChanged();
             }
         }
+
         public bool IsExpanded
         {
             get { return isExpanded; }
@@ -47,7 +50,6 @@ namespace AltecSystems.Revit.ServerExport.Models
             {
                 isExpanded = value;
                 OnPropertyChanged(nameof(IsExpanded));
-
             }
         }
     }

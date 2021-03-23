@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace AltecSystems.Revit.ServerExport.Services
 {
-    class PathFinder : INotifyPropertyChanged
+    internal class PathFinder : INotifyPropertyChanged
     {
         public PathFinder()
         {
             OnPropertyChanged();
         }
+
         private Dictionary<string, string> KeysValues = new Dictionary<string, string>()
         {
            {"2012",    "/RevitServerAdminRESTService/AdminRESTService.svc"},
@@ -29,6 +26,7 @@ namespace AltecSystems.Revit.ServerExport.Services
            {"2018","/RevitServerAdminRESTService2018/AdminRESTService.svc"},
            {"2019","/RevitServerAdminRESTService2019/AdminRESTService.svc"}
         };
+
         public ObservableCollection<string> SupportedVersionsKeys
         {
             get
@@ -47,11 +45,12 @@ namespace AltecSystems.Revit.ServerExport.Services
             }
             set
             {
-
             }
         }
+
         //private string ip = Properties.Settings.Default.ServerIP;
         private string ip = "";
+
         public string Ip
         {
             get
@@ -60,7 +59,6 @@ namespace AltecSystems.Revit.ServerExport.Services
             }
             set
             {
-
                 if (IPAddress.TryParse(value, out IPAddress ipp))
                 {
                     ip = ipp.ToString();
@@ -73,6 +71,7 @@ namespace AltecSystems.Revit.ServerExport.Services
         }
 
         private string version;//= "/RevitServerAdminRESTService2019/AdminRESTService.svc";
+
         public string Version
         {
             get { return version; }
@@ -96,7 +95,9 @@ namespace AltecSystems.Revit.ServerExport.Services
                 OnPropertyChanged("Destination");
             }
         }
+
         private string revitRoot = @"C:\Program Files\Autodesk\Revit 2019\";
+
         public string RevitRoot
         {
             get { return revitRoot; }
@@ -107,9 +108,10 @@ namespace AltecSystems.Revit.ServerExport.Services
                     revitRoot = value;
                 OnPropertyChanged("Text");
             }
-
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         public void OnPropertyChanged([CallerMemberName] string info = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));

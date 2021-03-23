@@ -24,7 +24,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         public async Task<FoldersAndModels> ListSubFoldersAndModels(string relativeFolderPath)
         {
-            var foldersAndModels = await Task<FoldersAndModels>.Factory.StartNew(() => 
+            var foldersAndModels = await Task<FoldersAndModels>.Factory.StartNew(() =>
             {
                 var sessionToken = SessionTokenGenerator.CreateServiceSessionToken();
                 _bufferedProxy.ListSubFoldersAndModels(sessionToken, relativeFolderPath, out var folders, out var models);
@@ -33,7 +33,6 @@ namespace AltecSystems.Revit.ServerExport.Services
             });
             return foldersAndModels;
         }
-
 
         private IEnumerable<string> ParseList(IEnumerable folderList)
         {
@@ -72,7 +71,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
                 nodes.Add(node);
                 progress.CurrentProgress++;
-                await LoadModelAsync(node.Children,node,newurl, progress);
+                await LoadModelAsync(node.Children, node, newurl, progress);
             }
         }
 
