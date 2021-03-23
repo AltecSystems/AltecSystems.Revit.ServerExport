@@ -82,7 +82,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Interface\IModelLoader.cs" />
+    <Compile Include="Models\ConnectionModel.cs" />
     <Compile Include="Models\Folder.cs" />
+    <Compile Include="Models\FoldersAndModels.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Node.cs" />
     <Compile Include="Models\ProgressModel.cs" />
@@ -91,11 +94,13 @@
     <Compile Include="ServerExportViewModel.cs" />
     <Compile Include="Services\BatBuilder.cs" />
     <Compile Include="Services\ExportModel.cs" />
-    <Compile Include="Services\ModelLoader.cs" />
+    <Compile Include="Services\RestApiModelLoader.cs" />
+    <Compile Include="Services\ModelServiceLoader.cs" />
     <Compile Include="Services\NodeViewer.cs" />
     <Compile Include="Services\PathFinder.cs" />
     <Compile Include="Services\Serializator.cs" />
     <Compile Include="Services\SettingsManager.cs" />
+    <Compile Include="Utils\SessionTokenGenerator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -148,8 +153,6 @@
     <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.ServiceContract.Local.dll" />
     <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.ServiceContract.Model.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interface\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

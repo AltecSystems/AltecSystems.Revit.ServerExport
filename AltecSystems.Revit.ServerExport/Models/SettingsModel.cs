@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 namespace AltecSystems.Revit.ServerExport.Models
 {
+    internal enum LoaderType
+    {
+        Rest = 0,
+        Proxy = 1
+    }
     internal class SettingsModel : NotifyPropertyChangedBase
     {
         private string _revitServerRootPath;
@@ -30,5 +35,35 @@ namespace AltecSystems.Revit.ServerExport.Models
 
         public string CurrentSelectionServerVersion { get; set; }
         public string RestUrl { get => RestUrls[CurrentSelectionServerVersion]; }
+
+        private LoaderType loaderType = LoaderType.Rest;
+
+        public LoaderType LoaderType
+        {
+            get { return loaderType; }
+            set
+            {
+                if (loaderType == value)
+                    return;
+
+                loaderType = value;
+                OnPropertyChanged("LoaderType");
+                OnPropertyChanged("IsProxyType");
+                OnPropertyChanged("IsRestType");
+            }
+        }
+
+        public bool IsProxyType
+        {
+            get { return LoaderType == LoaderType.Proxy; }
+            set { LoaderType = value ? LoaderType.Proxy : LoaderType; }
+        }
+
+        public bool IsRestType
+        {
+            get { return LoaderType == LoaderType.Rest; }
+            set { LoaderType = value ? LoaderType.Rest : LoaderType; }
+        }
+
     }
 }

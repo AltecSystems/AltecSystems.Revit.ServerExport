@@ -14,7 +14,7 @@
         <ResourceDictionary>
             <Style x:Key="defaultLabelStyle" TargetType="Label">
                 <Setter Property="Margin" Value="5" />
-                <Setter Property="Width" Value="120" />
+                <Setter Property="Width" Value="140" />
             </Style>
             <Style x:Key="defaultComboBoxStyle" TargetType="ComboBox">
                 <Setter Property="Margin" Value="5" />
@@ -76,6 +76,24 @@
                         SelectedItem="{Binding Settings.CurrentSelectionServerVersion}"
                         SelectedValue="2019"/>
                 </DockPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label 
+                        HorizontalAlignment="Left"
+                        Content="Тип загрузки моделей:"
+                        Style="{StaticResource defaultLabelStyle}"/>
+                    <RadioButton 
+                        Margin="5"
+                        VerticalContentAlignment="Center"
+                        GroupName="LoaderType"
+                        IsChecked="{Binding Settings.IsProxyType}"
+                        Content="Proxy" />
+                    <RadioButton 
+                        Margin="5"
+                        VerticalContentAlignment="Center"
+                        GroupName="LoaderType" 
+                        Content="Rest Api" 
+                        IsChecked="{Binding Settings.IsRestType}" />
+                </StackPanel>
             </StackPanel>
         </Grid>
         <Border 

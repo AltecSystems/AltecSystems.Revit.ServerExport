@@ -1,7 +1,9 @@
 ﻿using AltecSystems.Revit.ServerExport.Command;
 using AltecSystems.Revit.ServerExport.Models;
 using AltecSystems.Revit.ServerExport.Services;
+using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -12,9 +14,6 @@ namespace AltecSystems.Revit.ServerExport
         public ICommand DestinCommand { get; }
         public ICommand ExportCommand { get; }
         public ICommand LoadModelCommand { get; }
-
-        private readonly ModelLoader _loader;
-        private readonly ExportModel _export;
 
         public ObservableCollection<Node> Nodes { get; set; }
 
@@ -28,12 +27,10 @@ namespace AltecSystems.Revit.ServerExport
         {
             _settingsManager = new SettingsManager();
             Settings = _settingsManager.GetSettings();
-            Nodes = new ObservableCollection<Node>(); //new ObservableCollection<Node>(_settingsManager.GetCasheNodes());
+            Nodes = new ObservableCollection<Node>(); 
             DestinCommand = new RelayCommand(null,null);
             ExportCommand = new RelayCommand(Export, null);
-            LoadModelCommand = new RelayCommand(StartLoadModel, null);
-            _loader = new ModelLoader();
-            _export = new ExportModel();
+            LoadModelCommand = new RelayCommand(StartLoadModelAsync, null);
             Progress = new ProgressModel();
           
             Settings.PropertyChanged += Settings_PropertyChanged;
@@ -41,7 +38,7 @@ namespace AltecSystems.Revit.ServerExport
 
         private void Export(object obj)
         {
-            Export2.Export();
+           //Export2.Export();
         }
 
         private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -49,49 +46,29 @@ namespace AltecSystems.Revit.ServerExport
            _settingsManager.SaveSettings(Settings);   
         }
 
-        private async void StartLoadModel(object commandParam)
+        private async void StartLoadModelAsync(object commandParam)
         {
-            var root = "http://" + Settings.ServerHost + Settings.RestUrl;
-            var rootfolder = root + "/|";
             Progress.IsVisibility = System.Windows.Visibility.Visible;
             Progress.IsIndeterminate = true;
-            await LoadModelAsync(Nodes,rootfolder);
+            switch (Settings.LoaderType)
+            {
+                case LoaderType.Rest:
+                    {
+                        var loader = new RestApiModelLoader(Settings);
+                        await loader.LoadModelAsync(Nodes, Progress);
+                        break;
+                    }
+                case LoaderType.Proxy:
+                    {
+                        var loader = new ModelServiceLoader(Settings);
+                        await loader.LoadModelAsync(Nodes, Progress);
+                        break;
+                    }
+                default:
+                    break;
+            }
             Progress.IsVisibility = System.Windows.Visibility.Collapsed;
-            // _settingsManager.SaveCache(Nodes);
         }
-        
-
-        private async Task LoadModelAsync(ObservableCollection<Node> nodes, string url)
-        {
-            var model = await _loader.LoadModelAsync(url);
-
-            if (Progress.IsIndeterminate)
-                Progress.IsIndeterminate = false;
-
-            Progress.Max += model.Folders.Count;
-            
-            foreach (var item in model.Models)
-            {
-                nodes.Add(new Node() { Text = item.Name });
-            }
-            foreach (var item in model.Folders)
-            {
-                var node = new Node() { Text = item.Name };
-                string newurl;
-                if (url.EndsWith("/|"))
-                {
-                    newurl = url + node.Text;
-                }
-                else
-                {
-                    newurl = url + "|" + node.Text;
-                }
-                
-                nodes.Add(node);
-                Progress.CurrentProgress++;
-                await LoadModelAsync(node.Children, newurl);
-            }
-        } 
 
         //public ICommand DestinCommand
         //{
