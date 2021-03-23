@@ -70,21 +70,6 @@ namespace AltecSystems.Revit.ServerExport
             Progress.IsVisibility = System.Windows.Visibility.Collapsed;
         }
 
-        //public ICommand DestinCommand
-        //{
-        //    get
-        //    {
-        //        return destinCommand ?? (destinCommand = new RelayCommand(obj =>
-        //        {
-        //            //Forms.FolderBrowserDialog fbd = new Forms.FolderBrowserDialog();
-        //            //if (fbd.ShowDialog() == Forms.DialogResult.OK)
-        //            //{
-        //            //    PathFinders.First().Destination = fbd.SelectedPath;
-        //            //}
-        //        }));
-        //    }
-        //}
-
         //public ICommand ExportCommand
         //{
         //    get

@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("AltecSystems.Revit.ServerExport")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("AltecSystems")]
 [assembly: AssemblyProduct("AltecSystems.Revit.ServerExport")]
-[assembly: AssemblyCopyright("Copyright ©  2021")]
+[assembly: AssemblyCopyright("Copyright © AltecSystems 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

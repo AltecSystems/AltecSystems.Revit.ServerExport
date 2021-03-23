@@ -82,6 +82,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Extensions\ModelLocationExtensions.cs" />
     <Compile Include="Interface\IModelLoader.cs" />
     <Compile Include="Models\ConnectionModel.cs" />
     <Compile Include="Models\Folder.cs" />
@@ -92,11 +93,10 @@
     <Compile Include="Models\Root.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="ServerExportViewModel.cs" />
-    <Compile Include="Services\BatBuilder.cs" />
-    <Compile Include="Services\ExportModel.cs" />
+    <Compile Include="Services\ExportModels.cs" />
+    <Compile Include="Services\OldCode.cs" />
     <Compile Include="Services\RestApiModelLoader.cs" />
     <Compile Include="Services\ModelServiceLoader.cs" />
-    <Compile Include="Services\NodeViewer.cs" />
     <Compile Include="Services\PathFinder.cs" />
     <Compile Include="Services\Serializator.cs" />
     <Compile Include="Services\SettingsManager.cs" />
@@ -146,7 +146,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Libraries\Autodesk.RevitServer.Social.dll" />
-    <Content Include="Resources\Libraries\CommandServiceClient.dll" />
     <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.DataContract.dll" />
     <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.Helper.dll" />
     <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.Proxy.dll" />
