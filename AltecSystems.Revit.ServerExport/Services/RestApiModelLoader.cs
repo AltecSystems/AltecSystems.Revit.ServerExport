@@ -58,10 +58,10 @@ namespace AltecSystems.Revit.ServerExport.Services
         {
             var root = "http://" + _settings.ServerHost + _settings.RestUrl;
             var rootfolder = root + "/|";
-            await LoadModelAsync(nodes, rootfolder, progress);
+            await LoadModelAsync(nodes,null, rootfolder, progress);
         }
 
-        private async Task LoadModelAsync(ObservableCollection<Node> nodes, string url, ProgressModel progress)
+        private async Task LoadModelAsync(ObservableCollection<Node> nodes, Node parent, string url, ProgressModel progress)
         {
             var model = await GetResponseAsync(url);
 
@@ -72,11 +72,11 @@ namespace AltecSystems.Revit.ServerExport.Services
 
             foreach (var item in model.Models)
             {
-                nodes.Add(new Node() { Text = item.Name });
+                nodes.Add(new Node() { Text = item.Name, Parent = parent });
             }
             foreach (var item in model.Folders)
             {
-                var node = new Node() { Text = item.Name };
+                var node = new Node() { Text = item.Name, Parent = parent };
                 string newurl;
                 if (url.EndsWith("/|"))
                 {
@@ -89,7 +89,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
                 nodes.Add(node);
                 progress.CurrentProgress++;
-                await LoadModelAsync(node.Children, newurl, progress);
+                await LoadModelAsync(node.Children,node ,newurl, progress);
             }
         }
     }

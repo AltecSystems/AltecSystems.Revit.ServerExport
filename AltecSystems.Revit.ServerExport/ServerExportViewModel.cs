@@ -38,6 +38,7 @@ namespace AltecSystems.Revit.ServerExport
 
         private void Export(object obj)
         {
+            var t = "";
            //Export2.Export();
         }
 
@@ -60,7 +61,7 @@ namespace AltecSystems.Revit.ServerExport
                     }
                 case LoaderType.Proxy:
                     {
-                        var loader = new ModelServiceLoader(Settings);
+                        var loader = new ProxyModelLoader(Settings);
                         await loader.LoadModelAsync(Nodes, Progress);
                         break;
                     }

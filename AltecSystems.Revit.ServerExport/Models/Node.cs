@@ -1,6 +1,5 @@
 ﻿using AltecSystems.Revit.ServerExport.Command;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AltecSystems.Revit.ServerExport.Models
@@ -12,7 +11,7 @@ namespace AltecSystems.Revit.ServerExport.Models
             Id = Guid.NewGuid().ToString();
         }
         public ObservableCollection<Node> Children { get; set; } = new ObservableCollection<Node>();
-        public List<Node> ListChildren { get; set; } = new List<Node>();
+        public Node Parent { get; set; }
 
         public string Id { get; set; }
         private string text;
