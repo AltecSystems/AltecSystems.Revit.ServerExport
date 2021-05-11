@@ -17,7 +17,7 @@ namespace AltecSystems.Revit.ServerExport.Models
         public string Id { get; set; }
         private string text;
         private bool isChecked;
-        private bool isExpanded;
+        private bool isExpanded;    
 
         public bool IsChecked
         {
@@ -52,5 +52,6 @@ namespace AltecSystems.Revit.ServerExport.Models
                 OnPropertyChanged(nameof(IsExpanded));
             }
         }
+        
     }
 }

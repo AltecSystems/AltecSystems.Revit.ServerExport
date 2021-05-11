@@ -18,7 +18,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 {
     internal class ExportCredential
     {
-        public string HostId { get; set; }
+        public string HostIp { get; set; }
         public string ModelPath { get; set; }
         public string SsoUserName { get; } = string.Empty; // ?????
         public string UserName { get; set; }
@@ -30,12 +30,12 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         public ExportCredential(string hostId, string modelPath, string savePath)
         {
-            HostId = hostId;
+            HostIp = hostId;
             SavePath = savePath;
             ModelPath = modelPath;
             TempTargetFolder = GetTempTargetFolder();
             UserName = GetUserName();
-            ModelLocation = new ModelLocation(HostId, ModelPath, ModelLocationType.Server);
+            ModelLocation = new ModelLocation(HostIp, ModelPath, ModelLocationType.Server);
         }
 
         private string GetTempTargetFolder()
@@ -56,9 +56,9 @@ namespace AltecSystems.Revit.ServerExport.Services
         private readonly ExportCredential _credential;
         private readonly ModelIdentity _modelIdentity;
 
-        public ExportModels(string hostId, string modelPath, string savePath)
+        public ExportModels(ExportCredential exportCredential)
         {
-            _credential = new ExportCredential(hostId, modelPath, savePath);
+            _credential = exportCredential;//new ExportCredential(hostIp, modelPath, savePath);
             _modelIdentity = GetModelIdentity();
         }
 
@@ -179,17 +179,17 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         private IClientProxy<IModelService> GetStreamedProxy()
         {
-            return ProxyProvider.Instance.GetStreamedProxy<IModelService>(_credential.HostId);
+            return ProxyProvider.Instance.GetStreamedProxy<IModelService>(_credential.HostIp);
         }
 
         private IClientProxy<IModelService> GetRoutedProxy(string viaNode)
         {
-            return ProxyProvider.Instance.GetRoutedProxy<ILocalService, IModelService>(viaNode, _credential.HostId);
+            return ProxyProvider.Instance.GetRoutedProxy<ILocalService, IModelService>(viaNode, _credential.HostIp);
         }
 
         private IClientProxy<IModelService> GetBufferedProxy()
         {
-            return ProxyProvider.Instance.GetBufferedProxy<IModelService>(_credential.HostId);
+            return ProxyProvider.Instance.GetBufferedProxy<IModelService>(_credential.HostIp);
         }
     }
 }

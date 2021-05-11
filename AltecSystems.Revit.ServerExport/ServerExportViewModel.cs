@@ -1,6 +1,7 @@
 ﻿using AltecSystems.Revit.ServerExport.Command;
 using AltecSystems.Revit.ServerExport.Models;
 using AltecSystems.Revit.ServerExport.Services;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -35,8 +36,16 @@ namespace AltecSystems.Revit.ServerExport
 
         private void Export(object obj)
         {
-            var t = "";
+            var checkedNodes = GetExportCredentials();
+
             //Export2.Export();
+        }
+
+        private IEnumerable<ExportCredential> GetExportCredentials()
+        {
+            // Сделать обход по дереву и сформировать ExportCredential
+
+            return new List<ExportCredential>();
         }
 
         private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
