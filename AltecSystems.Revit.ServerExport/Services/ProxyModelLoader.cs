@@ -61,17 +61,17 @@ namespace AltecSystems.Revit.ServerExport.Services
 
             foreach (var item in foldersAndModels.SubModels)
             {
-                nodes.Add(new Node() { Text = item, Parent = parent });
+                nodes.Add(new Node() { Text = item, Parent = parent, IsModel = true, Path = path + "\\" + item });
             }
             foreach (var item in foldersAndModels.SubFolders)
             {
-                var node = new Node() { Text = item, Parent = parent };
-                string newurl;
-                newurl = path + "\\" + item;
+                var node = new Node() { Text = item, Parent = parent, Path = path + "\\" + item };
+                string url = path + "\\" + item;
+
 
                 nodes.Add(node);
                 progress.CurrentProgress++;
-                await LoadModelAsync(node.Children, node, newurl, progress);
+                await LoadModelAsync(node.Children, node, url, progress);
             }
         }
 

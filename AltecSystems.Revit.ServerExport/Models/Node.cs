@@ -15,6 +15,8 @@ namespace AltecSystems.Revit.ServerExport.Models
         public Node Parent { get; set; }
 
         public string Id { get; set; }
+        public string Path { get; set; }
+        public bool IsModel { get; set; }
         private string text;
         private bool isChecked;
         private bool isExpanded;    

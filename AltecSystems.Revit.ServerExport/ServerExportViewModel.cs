@@ -3,6 +3,7 @@ using AltecSystems.Revit.ServerExport.Models;
 using AltecSystems.Revit.ServerExport.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace AltecSystems.Revit.ServerExport
@@ -36,17 +37,41 @@ namespace AltecSystems.Revit.ServerExport
 
         private void Export(object obj)
         {
-            var checkedNodes = GetExportCredentials();
-
-            //Export2.Export();
+            var exportCredentials = GetExportCredentials(Nodes, new List<ExportCredential>());
+            foreach (var credential in exportCredentials)
+            {
+                var export = new ExportModels(credential);
+                if (export.Export())
+                {
+                    System.Console.WriteLine($"Model export");
+                } 
+            }
+            
         }
 
-        private IEnumerable<ExportCredential> GetExportCredentials()
+        private IEnumerable<ExportCredential> GetExportCredentials(ObservableCollection<Node> nodes, List<ExportCredential> credentials)
         {
-            // Сделать обход по дереву и сформировать ExportCredential
-
-            return new List<ExportCredential>();
+            foreach (var node in nodes)
+            {
+                if (!node.IsModel && node.Children.Any())
+                {
+                    GetExportCredentials(node.Children, credentials);
+                }
+                else if (node.IsModel && node.IsChecked)
+                {
+                    var savePath = GetSavePath(node.Path);
+                    System.Console.WriteLine(savePath);
+                    credentials.Add(new ExportCredential(Settings.ServerHost, node.Path, savePath));
+                }
+            }
+            return credentials;
         }
+
+        private string GetSavePath(string modelPath)
+        {
+            return modelPath.Replace(Settings.RevitServerRootPath, Settings.SavePath);
+        }
+
 
         private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

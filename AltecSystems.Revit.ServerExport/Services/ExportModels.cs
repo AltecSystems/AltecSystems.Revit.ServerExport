@@ -1,10 +1,10 @@
 ﻿using AltecSystems.Revit.ServerExport.Extensions;
+using AltecSystems.Revit.ServerExport.Models;
 using AltecSystems.Revit.ServerExport.Utils;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.Locks;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.Message;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.Model;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.SessionToken;
-using Autodesk.RevitServer.Enterprise.Common.ClientServer.Helper.Utils;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.Proxy;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.ServiceContract.Local;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.ServiceContract.Model;
@@ -16,41 +16,6 @@ using System.Linq;
 
 namespace AltecSystems.Revit.ServerExport.Services
 {
-    internal class ExportCredential
-    {
-        public string HostIp { get; set; }
-        public string ModelPath { get; set; }
-        public string SsoUserName { get; } = string.Empty; // ?????
-        public string UserName { get; set; }
-        public string TempTargetFolder { get; }
-
-        public string SavePath { get; }
-
-        public ModelLocation ModelLocation { get; }
-
-        public ExportCredential(string hostId, string modelPath, string savePath)
-        {
-            HostIp = hostId;
-            SavePath = savePath;
-            ModelPath = modelPath;
-            TempTargetFolder = GetTempTargetFolder();
-            UserName = GetUserName();
-            ModelLocation = new ModelLocation(HostIp, ModelPath, ModelLocationType.Server);
-        }
-
-        private string GetTempTargetFolder()
-        {
-            string arg = "RevitServerTool_ModelDataFileDownload_";
-            string arg2 = string.Format("{0}{1}", arg, Guid.NewGuid().ToString("N"));
-            return Path.Combine(Path.GetTempPath(), arg2);
-        }
-
-        private string GetUserName()
-        {
-            return $"RevitServerTool:{Environment.MachineName}:1";
-        }
-    }
-
     internal class ExportModels
     {
         private readonly ExportCredential _credential;
@@ -58,7 +23,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         public ExportModels(ExportCredential exportCredential)
         {
-            _credential = exportCredential;//new ExportCredential(hostIp, modelPath, savePath);
+            _credential = exportCredential;
             _modelIdentity = GetModelIdentity();
         }
 
@@ -87,18 +52,16 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         private bool CreateRvt()
         {
-            var sharedUtils = SharedUtils.Instance;
+            var rvtService = new RvtService();
             string centralModelFullPath = _credential.ModelLocation.GetUserVisiblePathFromModelLocation();
-            return sharedUtils.GenerateRvtFileFromModelDataFolder(_credential.TempTargetFolder, DataFormatVersion.Latest, _credential.SavePath, true, true, _modelIdentity, centralModelFullPath);
+            return rvtService.GenerateRvtFileFromModelDataFolder(_credential.TempTargetFolder, DataFormatVersion.Latest, _credential.SavePath, true, true, _modelIdentity, centralModelFullPath);
         }
 
         public bool DownloadFile(string sourceFile, string targetFile, EpisodeGuid creationDate)
         {
             try
             {
-                //IClientProxy<IModelService> clientProxy = ((ServerInfo.ConnectionState != ServerInfo.ConnectionStateEnum.Failover && !string.IsNullOrWhiteSpace(acceleratorNode) && !acceleratorNode.Equals(hostNode, StringComparison.CurrentCultureIgnoreCase)) ? GetRoutedProxy(acceleratorNode, hostNode) : GetStreamedProxy(hostNode));
                 IClientProxy<IModelService> clientProxy = GetStreamedProxy();
-                //IClientProxy<IModelService> clientProxy = GetRoutedProxy(acceleratorNode, hostNode);
                 IModelService proxy = clientProxy.Proxy;
 
                 return PerformDownload(proxy, sourceFile, targetFile, creationDate);
@@ -116,7 +79,6 @@ namespace AltecSystems.Revit.ServerExport.Services
             {
                 if (fileDownloadMessageStream.Stream == null)
                 {
-                    //throw new CommunicationException("Null stream returned");
                     throw new Exception();
                 }
                 string directoryName = Path.GetDirectoryName(targetFile);
