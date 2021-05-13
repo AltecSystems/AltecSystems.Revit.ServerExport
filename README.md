@@ -29,13 +29,13 @@
 ### Core 
 
 - [ ] Добавить обработку ошибок 
-- [ ] Исбавиться от зависимости - Castle.Core.dll
-- [ ] Исбавиться от зависимости - Castle.Windsor.dll
-- [ ] Исбавиться от зависимости - RS.Enterprise.Common.ClientServer.DataContract.dll
-- [ ] Исбавиться от зависимости - RS.Enterprise.Common.ClientServer.Helper.dll
-- [ ] Исбавиться от зависимости - RS.Enterprise.Common.ClientServer.Proxy.dll
-- [ ] Исбавиться от зависимости - RS.Enterprise.Common.ClientServer.ServiceContract.Local.dll
-- [ ] Исбавиться от зависимости - RS.Enterprise.Common.ClientServer.ServiceContract.Model.dlll
+- [ ] Избавиться от зависимости - Castle.Core.dll
+- [ ] Избавиться от зависимости - Castle.Windsor.dll
+- [ ] Избавиться от зависимости - RS.Enterprise.Common.ClientServer.DataContract.dll
+- [ ] Избавиться от зависимости - RS.Enterprise.Common.ClientServer.Helper.dll
+- [ ] Избавиться от зависимости - RS.Enterprise.Common.ClientServer.Proxy.dll
+- [ ] Избавиться от зависимости - RS.Enterprise.Common.ClientServer.ServiceContract.Local.dll
+- [ ] Избавиться от зависимости - RS.Enterprise.Common.ClientServer.ServiceContract.Model.dlll
 
 ### Перспективы развития проекта 
 
