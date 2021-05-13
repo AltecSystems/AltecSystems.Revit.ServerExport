@@ -68,7 +68,6 @@ namespace AltecSystems.Revit.ServerExport.Services
                 var node = new Node() { Text = item, Parent = parent, Path = path + "\\" + item };
                 string url = path + "\\" + item;
 
-
                 nodes.Add(node);
                 progress.CurrentProgress++;
                 await LoadModelAsync(node.Children, node, url, progress);

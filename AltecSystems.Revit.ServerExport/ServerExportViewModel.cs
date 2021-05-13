@@ -44,9 +44,8 @@ namespace AltecSystems.Revit.ServerExport
                 if (export.Export())
                 {
                     System.Console.WriteLine($"Model export");
-                } 
+                }
             }
-            
         }
 
         private IEnumerable<ExportCredential> GetExportCredentials(ObservableCollection<Node> nodes, List<ExportCredential> credentials)
@@ -71,7 +70,6 @@ namespace AltecSystems.Revit.ServerExport
         {
             return modelPath.Replace(Settings.RevitServerRootPath, Settings.SavePath);
         }
-
 
         private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

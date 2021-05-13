@@ -24,7 +24,7 @@ namespace AltecSystems.Revit.ServerExport.Services
                 stream.Write(value);
             }
         }
-       
+
         public SettingsModel GetSettings()
         {
             try
