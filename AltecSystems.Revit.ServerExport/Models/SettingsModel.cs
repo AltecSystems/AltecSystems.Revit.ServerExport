@@ -1,4 +1,5 @@
 ﻿using AltecSystems.Revit.ServerExport.Command;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace AltecSystems.Revit.ServerExport.Models
@@ -19,8 +20,10 @@ namespace AltecSystems.Revit.ServerExport.Models
         public string SavePath { get => _savePath; set => SetField(ref _savePath, value, nameof(SavePath)); }
         public string ServerHost { get => _serverHost; set => SetField(ref _serverHost, value, nameof(ServerHost)); }
 
-        public List<string> ServerVersion { get; } = new List<string> { "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019" };
+        [JsonIgnore]
+        public List<string> ServerVersion { get; } = new List<string> { "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021" };
 
+        [JsonIgnore]
         public Dictionary<string, string> RestUrls { get; } = new Dictionary<string, string>()
         {
            {"2012","/RevitServerAdminRESTService/AdminRESTService.svc"},
@@ -30,7 +33,9 @@ namespace AltecSystems.Revit.ServerExport.Models
            {"2016","/RevitServerAdminRESTService2016/AdminRESTService.svc"},
            {"2017","/RevitServerAdminRESTService2017/AdminRESTService.svc"},
            {"2018","/RevitServerAdminRESTService2018/AdminRESTService.svc"},
-           {"2019","/RevitServerAdminRESTService2019/AdminRESTService.svc"}
+           {"2019","/RevitServerAdminRESTService2019/AdminRESTService.svc"},
+           {"2020","/RevitServerAdminRESTService2020/AdminRESTService.svc"},
+           {"2021","/RevitServerAdminRESTService2021/AdminRESTService.svc"}
         };
 
         public string CurrentSelectionServerVersion { get; set; }

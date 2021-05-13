@@ -10,7 +10,7 @@ using System.Text;
 
 namespace AltecSystems.Revit.ServerExport.Services
 {
-    class RvtService
+	internal class RvtService
     {
 		public bool GenerateRvtFileFromModelDataFolder(string strModelDataPath, DataFormatVersion dataFormatVersion, string strRvtFilePath, bool bCreateLocal, bool bOverwrite, ModelIdentity centralIdentity, string centralModelFullPath)
 		{

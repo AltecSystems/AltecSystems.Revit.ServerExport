@@ -101,23 +101,5 @@ namespace AltecSystems.Revit.ServerExport
             }
             Progress.IsVisibility = System.Windows.Visibility.Collapsed;
         }
-
-        //public ICommand ExportCommand
-        //{
-        //    get
-        //    {
-        //        return exportCommand ?? (exportCommand = new RelayCommand(obj =>
-        //        {
-        //            //Properties.Settings.Default.Save();
-        //            var checkedNodes = Nodes.Where(x => x.IsChecked == true || x.IsChecked == null);
-        //            var rootFolder = Path.GetDirectoryName($"{Root}\\");
-        //            var paths = BatBuilder.CombinePath(Nodes, rootFolder);
-        //            var snd = BatBuilder.Splitter(paths, rootFolder);
-        //            BatBuilder.CreateBat(snd, PathFinders.First().Ip, PathFinders.First().Destination);
-        //            BatBuilder.RunBat(PathFinders.First().RevitRoot);
-        //            BatBuilder.CheckLoaded(snd, PathFinders.First().Destination, PathFinders.First().RevitRoot);
-        //        }));
-        //    }
-        //}
     }
 }
