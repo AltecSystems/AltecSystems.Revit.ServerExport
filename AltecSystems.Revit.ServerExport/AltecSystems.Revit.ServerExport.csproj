@@ -161,6 +161,7 @@
     <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.Proxy.dll" />
     <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.ServiceContract.Local.dll" />
     <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.ServiceContract.Model.dll" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
