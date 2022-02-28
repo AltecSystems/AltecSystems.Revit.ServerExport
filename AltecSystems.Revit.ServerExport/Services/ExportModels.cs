@@ -140,17 +140,17 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         private IClientProxy<IModelService> GetStreamedProxy()
         {
-            return ProxyProvider.GetProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
+            return ProxyProvider.CreateProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
         }
 
         private IClientProxy<IModelService> GetRoutedProxy(string viaNode)
         {
-            return ProxyProvider.GetProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
+            return ProxyProvider.CreateProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
         }
 
         private IClientProxy<IModelService> GetBufferedProxy()
         {
-            return ProxyProvider.GetProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
+            return ProxyProvider.CreateProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
         }
     }
 }

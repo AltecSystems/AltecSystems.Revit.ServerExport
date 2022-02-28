@@ -47,7 +47,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         private IClientProxy<IModelService> GetBufferedProxy()
         {
-            return ProxyProvider.GetProxyInstance(_connectionModel.RevitVersion).GetBufferedProxy<IModelService>(_connectionModel.ServerHost);
+            return ProxyProvider.CreateProxyInstance(_connectionModel.RevitVersion).GetBufferedProxy<IModelService>(_connectionModel.ServerHost);
         }
 
         private async Task LoadModelAsync(ObservableCollection<Node> nodes, Node parent, string path, ProgressModel progress)
