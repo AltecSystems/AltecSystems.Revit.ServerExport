@@ -60,7 +60,7 @@ namespace AltecSystems.Revit.ServerExport
                 {
                     var savePath = GetSavePath(node.Path);
                     System.Console.WriteLine(savePath);
-                    credentials.Add(new ExportCredential(Settings.ServerHost, node.Path, savePath));
+                    credentials.Add(new ExportCredential(Settings.ServerHost, node.Path, savePath, Settings.CurrentSelectionServerVersion));
                 }
             }
             return credentials;

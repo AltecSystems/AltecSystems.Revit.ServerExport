@@ -12,11 +12,13 @@ namespace AltecSystems.Revit.ServerExport.Models
         public string UserName { get; set; }
         public string TempTargetFolder { get; }
 
+        public string RevitVersion { get; }
+
         public string SavePath { get; }
 
         public ModelLocation ModelLocation { get; }
 
-        public ExportCredential(string hostId, string modelPath, string savePath)
+        public ExportCredential(string hostId, string modelPath, string savePath, string revitVersion)
         {
             HostIp = hostId;
             SavePath = savePath;
@@ -24,6 +26,7 @@ namespace AltecSystems.Revit.ServerExport.Models
             TempTargetFolder = GetTempTargetFolder();
             UserName = GetUserName();
             ModelLocation = new ModelLocation(HostIp, ModelPath, ModelLocationType.Server);
+            RevitVersion = revitVersion;
         }
 
         private string GetTempTargetFolder()

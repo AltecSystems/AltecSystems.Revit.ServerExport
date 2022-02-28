@@ -21,7 +21,7 @@ namespace AltecSystems.Revit.ServerExport.Models
         public string ServerHost { get => _serverHost; set => SetField(ref _serverHost, value, nameof(ServerHost)); }
 
         [JsonIgnore]
-        public List<string> ServerVersion { get; } = new List<string> { "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021" };
+        public List<string> ServerVersion { get; } = new List<string> { "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022" };
 
         [JsonIgnore]
         public Dictionary<string, string> RestUrls { get; } = new Dictionary<string, string>()
@@ -35,7 +35,8 @@ namespace AltecSystems.Revit.ServerExport.Models
            {"2018","/RevitServerAdminRESTService2018/AdminRESTService.svc"},
            {"2019","/RevitServerAdminRESTService2019/AdminRESTService.svc"},
            {"2020","/RevitServerAdminRESTService2020/AdminRESTService.svc"},
-           {"2021","/RevitServerAdminRESTService2021/AdminRESTService.svc"}
+           {"2021","/RevitServerAdminRESTService2021/AdminRESTService.svc"},
+           {"2022","/RevitServerAdminRESTService2022/AdminRESTService.svc"}
         };
 
         public string CurrentSelectionServerVersion { get; set; }
