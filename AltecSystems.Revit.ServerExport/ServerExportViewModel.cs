@@ -89,26 +89,13 @@ namespace AltecSystems.Revit.ServerExport
 
         private async void StartLoadModelAsync(object commandParam)
         {
-            Progress.IsVisibility = System.Windows.Visibility.Visible;
+            Progress.IsVisibility = Visibility.Visible;
             Progress.IsIndeterminate = true;
-            switch (Settings.LoaderType)
-            {
-                case LoaderType.Rest:
-                {
-                    var loader = new RestApiModelLoader(Settings);
-                    await loader.LoadModelAsync(Nodes, Progress);
-                    break;
-                }
-                case LoaderType.Proxy:
-                {
-                    var loader = new ProxyModelLoader(Settings);
-                    await loader.LoadModelAsync(Nodes, Progress);
-                    break;
-                }
-                default:
-                    break;
-            }
-            Progress.IsVisibility = System.Windows.Visibility.Collapsed;
+
+            var loader = new ProxyModelLoader(Settings);
+            await loader.LoadModelAsync(Nodes, Progress);
+
+            Progress.IsVisibility = Visibility.Collapsed;
         }
     }
 }
