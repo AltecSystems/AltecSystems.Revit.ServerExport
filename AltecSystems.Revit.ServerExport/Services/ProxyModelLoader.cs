@@ -55,7 +55,9 @@ namespace AltecSystems.Revit.ServerExport.Services
             var foldersAndModels = await ListSubFoldersAndModels(path);
 
             if (progress.IsIndeterminate)
+            {
                 progress.IsIndeterminate = false;
+            }
 
             progress.Max += foldersAndModels.SubFolders.Count();
 

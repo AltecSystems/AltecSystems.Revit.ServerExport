@@ -36,7 +36,7 @@ namespace AltecSystems.Revit.ServerExport.Services
             {
                 return false;
             }
-            if (bCreateLocal && (object)centralIdentity != null && centralIdentity.isValid())
+            if (bCreateLocal && centralIdentity != null && centralIdentity.isValid())
             {
                 try
                 {
@@ -51,7 +51,7 @@ namespace AltecSystems.Revit.ServerExport.Services
                         modelBasicFileInfoStream.WriteToRVTFile(strRvtFilePath, basicFileInfo);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw;
                 }
@@ -117,7 +117,6 @@ namespace AltecSystems.Revit.ServerExport.Services
             }
             StorageMode grfMode = StorageMode.ReadWrite | StorageMode.ShareExclusive;
             OleRootStorage oleRootStorage = new OleRootStorage();
-            BasicFileInfo basicFileInfo = null;
             string text = null;
             try
             {
@@ -128,13 +127,9 @@ namespace AltecSystems.Revit.ServerExport.Services
                 var modelDataStreamIdentifier = new ModelDataStreamIdentifier(ModelDataStreamType.mdstProjectInformation);
                 OleStream oleStream = oleRootStorage.OpenStream(modelDataStreamIdentifier.StreamName, grfMode);
                 text = Path.GetTempFileName();
-                if (!oleStream.Export(text))
-                {
-                    return null;
-                }
-                return ReadFromStreamFile(text);
+                return !oleStream.Export(text) ? null : ReadFromStreamFile(text);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -169,21 +164,21 @@ namespace AltecSystems.Revit.ServerExport.Services
                     basicFileInfo.Version = (BasicFileInfoStreamVersion)binaryReader.ReadInt32();
                     basicFileInfo.IsWorkshared = binaryReader.ReadBoolean();
                     basicFileInfo.WorksharingState = (WorksharingState)binaryReader.ReadByte();
-                    basicFileInfo.Username = readString(binaryReader);
-                    basicFileInfo.CentralPath = readString(binaryReader);
+                    basicFileInfo.Username = ReadString(binaryReader);
+                    basicFileInfo.CentralPath = ReadString(binaryReader);
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_Format)
                     {
-                        basicFileInfo.Format = readString(binaryReader);
-                        basicFileInfo.BuildVersion = readString(binaryReader);
+                        basicFileInfo.Format = ReadString(binaryReader);
+                        basicFileInfo.BuildVersion = ReadString(binaryReader);
                     }
                     else
                     {
-                        basicFileInfo.BuildVersion = readString(binaryReader);
-                        basicFileInfo.Format = extractYearFromBuildVersion(basicFileInfo.BuildVersion);
+                        basicFileInfo.BuildVersion = ReadString(binaryReader);
+                        basicFileInfo.Format = ExtractYearFromBuildVersion(basicFileInfo.BuildVersion);
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_LastSavePath)
                     {
-                        basicFileInfo.SavedPath = readString(binaryReader);
+                        basicFileInfo.SavedPath = ReadString(binaryReader);
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_OpenWorksetDefault)
                     {
@@ -195,11 +190,11 @@ namespace AltecSystems.Revit.ServerExport.Services
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_CentralModelIdentity)
                     {
-                        basicFileInfo.CentralIdentity = new ModelIdentity(new GUIDValue(new Guid(readString(binaryReader))));
+                        basicFileInfo.CentralIdentity = new ModelIdentity(new GUIDValue(new Guid(ReadString(binaryReader))));
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_LocaleWhenSaved)
                     {
-                        basicFileInfo.LocaleWhenSaved = readString(binaryReader);
+                        basicFileInfo.LocaleWhenSaved = ReadString(binaryReader);
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_AllLocalChangesSavedToCentral)
                     {
@@ -208,16 +203,16 @@ namespace AltecSystems.Revit.ServerExport.Services
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_LatestCentralVersionAndEpisode)
                     {
                         basicFileInfo.LatestCentralVersion = binaryReader.ReadInt32();
-                        basicFileInfo.LatestCentralEpisodeGUID = new GUIDValue(new Guid(readString(binaryReader)));
+                        basicFileInfo.LatestCentralEpisodeGUID = new GUIDValue(new Guid(ReadString(binaryReader)));
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_UniqueDocumentVersionIdentifier)
                     {
-                        basicFileInfo.UniqueDocumentVersionGUID = new GUIDValue(Guid.Parse(readString(binaryReader)));
-                        basicFileInfo.UniqueDocumentVersionSequence = int.Parse(readString(binaryReader));
+                        basicFileInfo.UniqueDocumentVersionGUID = new GUIDValue(Guid.Parse(ReadString(binaryReader)));
+                        basicFileInfo.UniqueDocumentVersionSequence = int.Parse(ReadString(binaryReader));
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_ModelIdentity)
                     {
-                        basicFileInfo.Identity = new ModelIdentity(new GUIDValue(new Guid(readString(binaryReader))));
+                        basicFileInfo.Identity = new ModelIdentity(new GUIDValue(new Guid(ReadString(binaryReader))));
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_IsSingleUserCloudModel)
                     {
@@ -225,12 +220,12 @@ namespace AltecSystems.Revit.ServerExport.Services
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_Author)
                     {
-                        basicFileInfo.Author = readString(binaryReader);
+                        basicFileInfo.Author = ReadString(binaryReader);
                         return basicFileInfo;
                     }
                     return basicFileInfo;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return null;
                 }
@@ -241,7 +236,7 @@ namespace AltecSystems.Revit.ServerExport.Services
             }
         }
 
-        private static string readString(BinaryReader reader)
+        private static string ReadString(BinaryReader reader)
         {
             int num = reader.ReadInt32();
             if (num > 0)
@@ -253,7 +248,7 @@ namespace AltecSystems.Revit.ServerExport.Services
             return string.Empty;
         }
 
-        private static string extractYearFromBuildVersion(string buildVersion)
+        private static string ExtractYearFromBuildVersion(string buildVersion)
         {
             int num = buildVersion.IndexOf('(');
             if (num >= 1)
@@ -270,7 +265,6 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         protected bool WriteToStreamFile(string basicFileInfoFilename, BasicFileInfo basicFileInfo)
         {
-            bool flag = false;
             if (!File.Exists(basicFileInfoFilename))
             {
                 return false;
@@ -282,20 +276,20 @@ namespace AltecSystems.Revit.ServerExport.Services
                     binaryWriter.Write((int)basicFileInfo.Version);
                     binaryWriter.Write(basicFileInfo.IsWorkshared);
                     binaryWriter.Write((byte)basicFileInfo.WorksharingState);
-                    writeString(binaryWriter, basicFileInfo.Username);
-                    writeString(binaryWriter, basicFileInfo.CentralPath);
+                    WriteString(binaryWriter, basicFileInfo.Username);
+                    WriteString(binaryWriter, basicFileInfo.CentralPath);
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_Format)
                     {
-                        writeString(binaryWriter, basicFileInfo.Format);
-                        writeString(binaryWriter, basicFileInfo.BuildVersion);
+                        WriteString(binaryWriter, basicFileInfo.Format);
+                        WriteString(binaryWriter, basicFileInfo.BuildVersion);
                     }
                     else
                     {
-                        writeString(binaryWriter, basicFileInfo.BuildVersion);
+                        WriteString(binaryWriter, basicFileInfo.BuildVersion);
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_LastSavePath)
                     {
-                        writeString(binaryWriter, basicFileInfo.SavedPath);
+                        WriteString(binaryWriter, basicFileInfo.SavedPath);
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_OpenWorksetDefault)
                     {
@@ -307,11 +301,11 @@ namespace AltecSystems.Revit.ServerExport.Services
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_CentralModelIdentity)
                     {
-                        writeString(binaryWriter, basicFileInfo.CentralIdentity.IdentityGUID.GUID.ToString());
+                        WriteString(binaryWriter, basicFileInfo.CentralIdentity.IdentityGUID.GUID.ToString());
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_LocaleWhenSaved)
                     {
-                        writeString(binaryWriter, basicFileInfo.LocaleWhenSaved);
+                        WriteString(binaryWriter, basicFileInfo.LocaleWhenSaved);
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_AllLocalChangesSavedToCentral)
                     {
@@ -320,16 +314,16 @@ namespace AltecSystems.Revit.ServerExport.Services
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_LatestCentralVersionAndEpisode)
                     {
                         binaryWriter.Write(basicFileInfo.LatestCentralVersion);
-                        writeString(binaryWriter, basicFileInfo.LatestCentralEpisodeGUID.GUID.ToString());
+                        WriteString(binaryWriter, basicFileInfo.LatestCentralEpisodeGUID.GUID.ToString());
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_UniqueDocumentVersionIdentifier)
                     {
-                        writeString(binaryWriter, basicFileInfo.UniqueDocumentVersionGUID.GUID.ToString());
-                        writeString(binaryWriter, basicFileInfo.UniqueDocumentVersionSequence.ToString());
+                        WriteString(binaryWriter, basicFileInfo.UniqueDocumentVersionGUID.GUID.ToString());
+                        WriteString(binaryWriter, basicFileInfo.UniqueDocumentVersionSequence.ToString());
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_ModelIdentity)
                     {
-                        writeString(binaryWriter, basicFileInfo.Identity.IdentityGUID.GUID.ToString());
+                        WriteString(binaryWriter, basicFileInfo.Identity.IdentityGUID.GUID.ToString());
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_IsSingleUserCloudModel)
                     {
@@ -337,7 +331,7 @@ namespace AltecSystems.Revit.ServerExport.Services
                     }
                     if (basicFileInfo.Version >= BasicFileInfoStreamVersion.BFISV_Author)
                     {
-                        writeString(binaryWriter, basicFileInfo.Author);
+                        WriteString(binaryWriter, basicFileInfo.Author);
                     }
                     binaryWriter.Write(Environment.NewLine);
                     binaryWriter.Write(basicFileInfo.ToString().ToCharArray());
@@ -355,7 +349,7 @@ namespace AltecSystems.Revit.ServerExport.Services
             }
         }
 
-        private static void writeString(BinaryWriter writer, string content)
+        private static void WriteString(BinaryWriter writer, string content)
         {
             writer.Write(content.Length);
             if (content.Length > 0)
@@ -366,8 +360,10 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         private IModelDataVersionManager CreateModelDataVersionManager(string modelDataPath, DataFormatVersion formatVersion)
         {
-            IModelDataVersionManager modelDataVersionManager = new ModelDataVersionManager(modelDataPath, formatVersion);
-            modelDataVersionManager.ModelPathUtils = SharedUtils.Instance.ModelPathUtils;
+            IModelDataVersionManager modelDataVersionManager = new ModelDataVersionManager(modelDataPath, formatVersion)
+            {
+                ModelPathUtils = SharedUtils.Instance.ModelPathUtils
+            };
             return modelDataVersionManager;
         }
     }

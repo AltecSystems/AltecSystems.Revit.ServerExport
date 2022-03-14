@@ -66,7 +66,9 @@ namespace AltecSystems.Revit.ServerExport.Services
             var model = await GetResponseAsync(url);
 
             if (progress.IsIndeterminate)
+            {
                 progress.IsIndeterminate = false;
+            }
 
             progress.Max += model.Folders.Count;
 
@@ -77,15 +79,7 @@ namespace AltecSystems.Revit.ServerExport.Services
             foreach (var item in model.Folders)
             {
                 var node = new Node() { Text = item.Name, Parent = parent };
-                string newurl;
-                if (url.EndsWith("/|"))
-                {
-                    newurl = url + node.Text;
-                }
-                else
-                {
-                    newurl = url + "|" + node.Text;
-                }
+                string newurl = url.EndsWith("/|") ? url + node.Text : url + "|" + node.Text;
 
                 nodes.Add(node);
                 progress.CurrentProgress++;

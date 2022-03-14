@@ -41,7 +41,7 @@ namespace AltecSystems.Revit.ServerExport.Services
                     return settings;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return GetDefaultSettings();
             }

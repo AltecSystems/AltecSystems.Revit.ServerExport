@@ -48,11 +48,11 @@ namespace AltecSystems.Revit.ServerExport
                 {
                     export.Export();
                 }
-                catch (FaultException ex)
+                catch (FaultException)
                 {
                     MessageBox.Show("Произошла ошибка при выгрузке. Проверьте версию revit");
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     MessageBox.Show("Произошла ошибка при выгрузке.");
                 }
@@ -94,17 +94,17 @@ namespace AltecSystems.Revit.ServerExport
             switch (Settings.LoaderType)
             {
                 case LoaderType.Rest:
-                    {
-                        var loader = new RestApiModelLoader(Settings);
-                        await loader.LoadModelAsync(Nodes, Progress);
-                        break;
-                    }
+                {
+                    var loader = new RestApiModelLoader(Settings);
+                    await loader.LoadModelAsync(Nodes, Progress);
+                    break;
+                }
                 case LoaderType.Proxy:
-                    {
-                        var loader = new ProxyModelLoader(Settings);
-                        await loader.LoadModelAsync(Nodes, Progress);
-                        break;
-                    }
+                {
+                    var loader = new ProxyModelLoader(Settings);
+                    await loader.LoadModelAsync(Nodes, Progress);
+                    break;
+                }
                 default:
                     break;
             }
