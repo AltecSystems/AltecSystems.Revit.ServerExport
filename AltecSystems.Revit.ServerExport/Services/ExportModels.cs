@@ -6,7 +6,6 @@ using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.Message;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.Model;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.SessionToken;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.Proxy;
-using Autodesk.RevitServer.Enterprise.Common.ClientServer.ServiceContract.Local;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.ServiceContract.Model;
 using Autodesk.Social.Services.Files.ServiceContracts.Client.Internals;
 using System;
@@ -121,7 +120,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         private LockStatus LockData(out EpisodeGuid creationDate)
         {
-            var sessionToken = CreateServiceModelSessionToken();
+            var sessionToken =  CreateServiceModelSessionToken();
 
             uint lockOptions = 129u;
 
@@ -141,17 +140,17 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         private IClientProxy<IModelService> GetStreamedProxy()
         {
-            return ProxyProvider.Instance.GetStreamedProxy<IModelService>(_credential.HostIp);
+            return ProxyProvider.CreateProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
         }
 
         private IClientProxy<IModelService> GetRoutedProxy(string viaNode)
         {
-            return ProxyProvider.Instance.GetRoutedProxy<ILocalService, IModelService>(viaNode, _credential.HostIp);
+            return ProxyProvider.CreateProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
         }
 
         private IClientProxy<IModelService> GetBufferedProxy()
         {
-            return ProxyProvider.Instance.GetBufferedProxy<IModelService>(_credential.HostIp);
+            return ProxyProvider.CreateProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
         }
     }
 }

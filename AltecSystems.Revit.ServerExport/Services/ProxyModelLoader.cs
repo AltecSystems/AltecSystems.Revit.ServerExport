@@ -18,7 +18,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         public ProxyModelLoader(SettingsModel settings)
         {
-            _connectionModel = new ConnectionModel() { RevitServerRootPath = settings.RevitServerRootPath, ServerHost = settings.ServerHost };
+            _connectionModel = new ConnectionModel() { RevitServerRootPath = settings.RevitServerRootPath, ServerHost = settings.ServerHost, RevitVersion = settings.CurrentSelectionServerVersion };
             _bufferedProxy = GetBufferedProxy().Proxy;
         }
 
@@ -47,7 +47,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         private IClientProxy<IModelService> GetBufferedProxy()
         {
-            return ProxyProvider.Instance.GetBufferedProxy<IModelService>(_connectionModel.ServerHost);
+            return ProxyProvider.CreateProxyInstance(_connectionModel.RevitVersion).GetBufferedProxy<IModelService>(_connectionModel.ServerHost);
         }
 
         private async Task LoadModelAsync(ObservableCollection<Node> nodes, Node parent, string path, ProgressModel progress)

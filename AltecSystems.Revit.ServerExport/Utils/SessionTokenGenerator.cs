@@ -7,7 +7,7 @@ namespace AltecSystems.Revit.ServerExport.Utils
     {
         public static ServiceSessionToken CreateServiceSessionToken()
         {
-            return new ServiceSessionToken("RevitServerTool:DESKTOP-FP5GVOM:1", string.Empty, Environment.MachineName, Guid.NewGuid().ToString());
+            return new ServiceSessionToken($"RevitServerTool:{Environment.MachineName}:1", string.Empty, Environment.MachineName, Guid.NewGuid().ToString());
         }
     }
 }

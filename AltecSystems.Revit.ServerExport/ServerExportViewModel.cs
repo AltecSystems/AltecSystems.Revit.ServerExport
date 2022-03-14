@@ -1,9 +1,12 @@
 ﻿using AltecSystems.Revit.ServerExport.Command;
 using AltecSystems.Revit.ServerExport.Models;
 using AltecSystems.Revit.ServerExport.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ServiceModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AltecSystems.Revit.ServerExport
@@ -41,10 +44,22 @@ namespace AltecSystems.Revit.ServerExport
             foreach (var credential in exportCredentials)
             {
                 var export = new ExportModels(credential);
-                if (export.Export())
+                try
                 {
-                    System.Console.WriteLine($"Model export");
+                    if (export.Export())
+                    {
+                        MessageBox.Show("Выгрузка завершена");
+                    }
                 }
+                catch (FaultException ex)
+                {
+                    MessageBox.Show("Произошла ошибка при выгрузке. Проверьте версию revit");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Произошла ошибка при выгрузке.");
+                }
+
             }
         }
 
@@ -60,7 +75,7 @@ namespace AltecSystems.Revit.ServerExport
                 {
                     var savePath = GetSavePath(node.Path);
                     System.Console.WriteLine(savePath);
-                    credentials.Add(new ExportCredential(Settings.ServerHost, node.Path, savePath));
+                    credentials.Add(new ExportCredential(Settings.ServerHost, node.Path, savePath, Settings.CurrentSelectionServerVersion));
                 }
             }
             return credentials;

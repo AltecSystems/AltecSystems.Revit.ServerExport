@@ -40,27 +40,15 @@ namespace AltecSystems.Revit.ServerExport.Services
             {
                 try
                 {
+                    ModelBasicFileInfoStream modelBasicFileInfoStream = new ModelBasicFileInfoStream(dataFormatVersion);
                     var basicFileInfo = ReadFromRVTFile(strRvtFilePath);
                     if (basicFileInfo != null)
                     {
-                        basicFileInfo.AllLocalChangesSavedToCentral = false;
-                        basicFileInfo.Author = "Autodesk Revit";
-                        basicFileInfo.CentralIdentity = ModelIdentity.NewModelIdentity;
-                        basicFileInfo.CentralPath = "";
-                        basicFileInfo.Format = "2019";
+                        basicFileInfo.CentralIdentity = centralIdentity;
+                        basicFileInfo.WorksharingState = WorksharingState.WS_CreatedLocal;
+                        basicFileInfo.CentralPath = centralModelFullPath;
                         basicFileInfo.Identity = ModelIdentity.NewModelIdentity;
-                        basicFileInfo.IsLT = false;
-                        basicFileInfo.IsSingleUserCloudModel = false;
-                        basicFileInfo.IsWorkshared = false;
-                        basicFileInfo.LocaleWhenSaved = "RUS";
-                        basicFileInfo.OpenWorksetDefault = 1;
-                        basicFileInfo.SavedPath = "";
-                        basicFileInfo.Username = "";
-                        basicFileInfo.LatestCentralVersion = 1;
-                        basicFileInfo.UniqueDocumentVersionSequence = 1;
-                        basicFileInfo.UniqueDocumentVersionGUID = GUIDValue.NewGUIDValue();
-                        basicFileInfo.LatestCentralEpisodeGUID = GUIDValue.NewGUIDValue();
-                        basicFileInfo.WorksharingState = WorksharingState.WS_Central;
+                        modelBasicFileInfoStream.WriteToRVTFile(strRvtFilePath, basicFileInfo);
                     }
                 }
                 catch (Exception ex)
