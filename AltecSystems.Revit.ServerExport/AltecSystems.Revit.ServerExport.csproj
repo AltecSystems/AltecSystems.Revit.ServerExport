@@ -111,16 +111,12 @@
     <Compile Include="Interface\IModelLoader.cs" />
     <Compile Include="Models\ConnectionModel.cs" />
     <Compile Include="Models\ExportCredential.cs" />
-    <Compile Include="Models\Folder.cs" />
     <Compile Include="Models\FoldersAndModels.cs" />
-    <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Node.cs" />
     <Compile Include="Models\ProgressModel.cs" />
-    <Compile Include="Models\Root.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="ServerExportViewModel.cs" />
     <Compile Include="Services\ExportModels.cs" />
-    <Compile Include="Services\RestApiModelLoader.cs" />
     <Compile Include="Services\ProxyModelLoader.cs" />
     <Compile Include="Services\RvtService.cs" />
     <Compile Include="Services\SettingsManager.cs" />
@@ -145,7 +141,6 @@
       <SubType>Code</SubType>
     </Compile>
     <None Include="packages.config" />
-    <None Include="Resources\Revit server rest api doc.pdf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -160,14 +155,6 @@
     <Content Include="Resources\Libraries2022\RS.Enterprise.Common.ClientServer.Proxy.dll" />
     <Content Include="Resources\Libraries2022\RS.Enterprise.Common.ClientServer.ServiceContract.Local.dll" />
     <Content Include="Resources\Libraries2022\RS.Enterprise.Common.ClientServer.ServiceContract.Model.dll" />
-    <Content Include="Resources\Libraries\Castle.Core.dll" />
-    <Content Include="Resources\Libraries\Castle.Windsor.dll" />
-    <Content Include="Resources\Libraries\Autodesk.RevitServer.Social.dll" />
-    <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.DataContract.dll" />
-    <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.Helper.dll" />
-    <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.Proxy.dll" />
-    <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.ServiceContract.Local.dll" />
-    <Content Include="Resources\Libraries\RS.Enterprise.Common.ClientServer.ServiceContract.Model.dll" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
