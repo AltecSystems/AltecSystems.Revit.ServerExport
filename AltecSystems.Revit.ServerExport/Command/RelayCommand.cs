@@ -5,18 +5,18 @@ namespace AltecSystems.Revit.ServerExport.Command
 {
     internal class RelayCommand : ICommand
     {
-        private Action<object> execute;
-        private Func<object, bool> canExecute;
+        private readonly Action<object> _execute;
+        private readonly Func<object, bool> _canExecute;
 
         public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
         {
-            this.execute = execute;
-            this.canExecute = canExecute;
+            _execute = execute;
+            _canExecute = canExecute;
         }
 
         public bool CanExecute(object parameter)
         {
-            return canExecute == null ? true : canExecute(parameter);
+            return _canExecute == null || _canExecute(parameter);
         }
 
         public event EventHandler CanExecuteChanged
@@ -27,7 +27,7 @@ namespace AltecSystems.Revit.ServerExport.Command
 
         public void Execute(object parameter)
         {
-            this.execute(parameter);
+            _execute(parameter);
         }
     }
 }

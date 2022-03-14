@@ -1,6 +1,6 @@
-﻿using AltecSystems.Revit.ServerExport.Command;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
+using AltecSystems.Revit.ServerExport.Command;
 
 namespace AltecSystems.Revit.ServerExport.Models
 {
@@ -17,16 +17,16 @@ namespace AltecSystems.Revit.ServerExport.Models
         public string Id { get; set; }
         public string Path { get; set; }
         public bool IsModel { get; set; }
-        private string text;
-        private bool isChecked;
-        private bool isExpanded;
+        private string _text;
+        private bool _isChecked;
+        private bool _isExpanded;
 
         public bool IsChecked
         {
-            get { return isChecked; }
+            get => _isChecked;
             set
             {
-                isChecked = value;
+                _isChecked = value;
                 foreach (var item in Children)
                 {
                     item.IsChecked = value;
@@ -37,20 +37,20 @@ namespace AltecSystems.Revit.ServerExport.Models
 
         public string Text
         {
-            get { return text; }
+            get => _text;
             set
             {
-                text = value;
+                _text = value;
                 OnPropertyChanged();
             }
         }
 
         public bool IsExpanded
         {
-            get { return isExpanded; }
+            get => _isExpanded;
             set
             {
-                isExpanded = value;
+                _isExpanded = value;
                 OnPropertyChanged(nameof(IsExpanded));
             }
         }

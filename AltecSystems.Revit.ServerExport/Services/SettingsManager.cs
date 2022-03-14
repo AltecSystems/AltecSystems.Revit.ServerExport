@@ -1,8 +1,8 @@
-﻿using AltecSystems.Revit.ServerExport.Models;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
+using AltecSystems.Revit.ServerExport.Models;
+using Newtonsoft.Json;
 
 namespace AltecSystems.Revit.ServerExport.Services
 {
@@ -41,7 +41,7 @@ namespace AltecSystems.Revit.ServerExport.Services
                     return settings;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return GetDefaultSettings();
             }

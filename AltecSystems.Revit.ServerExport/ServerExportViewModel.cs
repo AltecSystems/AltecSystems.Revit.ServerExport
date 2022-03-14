@@ -1,13 +1,13 @@
-﻿using AltecSystems.Revit.ServerExport.Command;
-using AltecSystems.Revit.ServerExport.Models;
-using AltecSystems.Revit.ServerExport.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel;
 using System.Windows;
 using System.Windows.Input;
+using AltecSystems.Revit.ServerExport.Command;
+using AltecSystems.Revit.ServerExport.Models;
+using AltecSystems.Revit.ServerExport.Services;
 
 namespace AltecSystems.Revit.ServerExport
 {
@@ -46,21 +46,18 @@ namespace AltecSystems.Revit.ServerExport
                 var export = new ExportModels(credential);
                 try
                 {
-                    if (export.Export())
-                    {
-                        MessageBox.Show("Выгрузка завершена");
-                    }
+                    export.Export();
                 }
-                catch (FaultException ex)
+                catch (FaultException)
                 {
                     MessageBox.Show("Произошла ошибка при выгрузке. Проверьте версию revit");
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     MessageBox.Show("Произошла ошибка при выгрузке.");
                 }
-
             }
+            MessageBox.Show("Выгрузка завершена");
         }
 
         private IEnumerable<ExportCredential> GetExportCredentials(ObservableCollection<Node> nodes, List<ExportCredential> credentials)
@@ -74,7 +71,6 @@ namespace AltecSystems.Revit.ServerExport
                 else if (node.IsModel && node.IsChecked)
                 {
                     var savePath = GetSavePath(node.Path);
-                    System.Console.WriteLine(savePath);
                     credentials.Add(new ExportCredential(Settings.ServerHost, node.Path, savePath, Settings.CurrentSelectionServerVersion));
                 }
             }
@@ -93,26 +89,13 @@ namespace AltecSystems.Revit.ServerExport
 
         private async void StartLoadModelAsync(object commandParam)
         {
-            Progress.IsVisibility = System.Windows.Visibility.Visible;
+            Progress.IsVisibility = Visibility.Visible;
             Progress.IsIndeterminate = true;
-            switch (Settings.LoaderType)
-            {
-                case LoaderType.Rest:
-                    {
-                        var loader = new RestApiModelLoader(Settings);
-                        await loader.LoadModelAsync(Nodes, Progress);
-                        break;
-                    }
-                case LoaderType.Proxy:
-                    {
-                        var loader = new ProxyModelLoader(Settings);
-                        await loader.LoadModelAsync(Nodes, Progress);
-                        break;
-                    }
-                default:
-                    break;
-            }
-            Progress.IsVisibility = System.Windows.Visibility.Collapsed;
+
+            var loader = new ProxyModelLoader(Settings);
+            await loader.LoadModelAsync(Nodes, Progress);
+
+            Progress.IsVisibility = Visibility.Collapsed;
         }
     }
 }
