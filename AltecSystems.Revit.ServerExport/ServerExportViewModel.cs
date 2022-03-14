@@ -1,13 +1,13 @@
-﻿using AltecSystems.Revit.ServerExport.Command;
-using AltecSystems.Revit.ServerExport.Models;
-using AltecSystems.Revit.ServerExport.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel;
 using System.Windows;
 using System.Windows.Input;
+using AltecSystems.Revit.ServerExport.Command;
+using AltecSystems.Revit.ServerExport.Models;
+using AltecSystems.Revit.ServerExport.Services;
 
 namespace AltecSystems.Revit.ServerExport
 {

@@ -1,5 +1,5 @@
-﻿using AltecSystems.Revit.ServerExport.Command;
-using System.Windows;
+﻿using System.Windows;
+using AltecSystems.Revit.ServerExport.Command;
 
 namespace AltecSystems.Revit.ServerExport.Models
 {

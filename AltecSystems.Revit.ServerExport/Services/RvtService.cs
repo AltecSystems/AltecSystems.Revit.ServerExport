@@ -1,12 +1,12 @@
-﻿using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.Model;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.Model;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.Helper.ModelStorage;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.Helper.OleFile;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.Helper.Utils;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.Helper.VersionManager;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace AltecSystems.Revit.ServerExport.Services
 {

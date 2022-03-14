@@ -1,4 +1,8 @@
-﻿using AltecSystems.Revit.ServerExport.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using AltecSystems.Revit.ServerExport.Extensions;
 using AltecSystems.Revit.ServerExport.Models;
 using AltecSystems.Revit.ServerExport.Utils;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.Locks;
@@ -8,10 +12,6 @@ using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.SessionTo
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.Proxy;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.ServiceContract.Model;
 using Autodesk.Social.Services.Files.ServiceContracts.Client.Internals;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace AltecSystems.Revit.ServerExport.Services
 {

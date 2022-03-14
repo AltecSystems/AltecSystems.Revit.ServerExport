@@ -1,11 +1,11 @@
-﻿using AltecSystems.Revit.ServerExport.Interface;
-using AltecSystems.Revit.ServerExport.Models;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using AltecSystems.Revit.ServerExport.Interface;
+using AltecSystems.Revit.ServerExport.Models;
+using Newtonsoft.Json;
 
 namespace AltecSystems.Revit.ServerExport.Services
 {

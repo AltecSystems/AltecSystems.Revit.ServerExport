@@ -1,6 +1,6 @@
-﻿using AltecSystems.Revit.ServerExport.Command;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
+using AltecSystems.Revit.ServerExport.Command;
 
 namespace AltecSystems.Revit.ServerExport.Models
 {

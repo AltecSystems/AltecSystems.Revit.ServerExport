@@ -1,6 +1,6 @@
-﻿using AltecSystems.Revit.ServerExport.Command;
+﻿using System.Collections.Generic;
+using AltecSystems.Revit.ServerExport.Command;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace AltecSystems.Revit.ServerExport.Models
 {
