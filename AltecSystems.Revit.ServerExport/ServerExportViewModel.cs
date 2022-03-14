@@ -46,10 +46,7 @@ namespace AltecSystems.Revit.ServerExport
                 var export = new ExportModels(credential);
                 try
                 {
-                    if (export.Export())
-                    {
-                        MessageBox.Show("Выгрузка завершена");
-                    }
+                    export.Export();
                 }
                 catch (FaultException ex)
                 {
@@ -59,8 +56,8 @@ namespace AltecSystems.Revit.ServerExport
                 {
                     MessageBox.Show("Произошла ошибка при выгрузке.");
                 }
-
             }
+            MessageBox.Show("Выгрузка завершена");
         }
 
         private IEnumerable<ExportCredential> GetExportCredentials(ObservableCollection<Node> nodes, List<ExportCredential> credentials)
@@ -74,7 +71,6 @@ namespace AltecSystems.Revit.ServerExport
                 else if (node.IsModel && node.IsChecked)
                 {
                     var savePath = GetSavePath(node.Path);
-                    System.Console.WriteLine(savePath);
                     credentials.Add(new ExportCredential(Settings.ServerHost, node.Path, savePath, Settings.CurrentSelectionServerVersion));
                 }
             }
