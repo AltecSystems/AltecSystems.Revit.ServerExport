@@ -1,5 +1,5 @@
-﻿using AltecSystems.Revit.ServerExport.Command;
-using System.Windows;
+﻿using System.Windows;
+using AltecSystems.Revit.ServerExport.Command;
 
 namespace AltecSystems.Revit.ServerExport.Models
 {
@@ -41,12 +41,6 @@ namespace AltecSystems.Revit.ServerExport.Models
         private Visibility _isVisible = Visibility.Collapsed;
         public Visibility IsVisibility { get => _isVisible; set => SetField(ref _isVisible, value, nameof(IsVisibility)); }
 
-        public string StatusText
-        {
-            get
-            {
-                return IsIndeterminate ? "Ожидание загрузки" : $"Загружено {CurrentProgress} из {Max}";
-            }
-        }
+        public string StatusText => IsIndeterminate ? "Ожидание загрузки" : $"Загружено {CurrentProgress} из {Max}";
     }
 }

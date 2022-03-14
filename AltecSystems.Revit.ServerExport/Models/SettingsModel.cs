@@ -1,6 +1,6 @@
-﻿using AltecSystems.Revit.ServerExport.Command;
+﻿using System.Collections.Generic;
+using AltecSystems.Revit.ServerExport.Command;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace AltecSystems.Revit.ServerExport.Models
 {
@@ -40,19 +40,21 @@ namespace AltecSystems.Revit.ServerExport.Models
         };
 
         public string CurrentSelectionServerVersion { get; set; }
-        public string RestUrl { get => RestUrls[CurrentSelectionServerVersion]; }
+        public string RestUrl => RestUrls[CurrentSelectionServerVersion];
 
-        private LoaderType loaderType = LoaderType.Rest;
+        private LoaderType _loaderType = LoaderType.Rest;
 
         public LoaderType LoaderType
         {
-            get { return loaderType; }
+            get => _loaderType;
             set
             {
-                if (loaderType == value)
+                if (_loaderType == value)
+                {
                     return;
+                }
 
-                loaderType = value;
+                _loaderType = value;
                 OnPropertyChanged("LoaderType");
                 OnPropertyChanged("IsProxyType");
                 OnPropertyChanged("IsRestType");
@@ -61,14 +63,14 @@ namespace AltecSystems.Revit.ServerExport.Models
 
         public bool IsProxyType
         {
-            get { return LoaderType == LoaderType.Proxy; }
-            set { LoaderType = value ? LoaderType.Proxy : LoaderType; }
+            get => LoaderType == LoaderType.Proxy;
+            set => LoaderType = value ? LoaderType.Proxy : LoaderType;
         }
 
         public bool IsRestType
         {
-            get { return LoaderType == LoaderType.Rest; }
-            set { LoaderType = value ? LoaderType.Rest : LoaderType; }
+            get => LoaderType == LoaderType.Rest;
+            set => LoaderType = value ? LoaderType.Rest : LoaderType;
         }
     }
 }

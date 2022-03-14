@@ -1,4 +1,8 @@
-﻿using AltecSystems.Revit.ServerExport.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using AltecSystems.Revit.ServerExport.Extensions;
 using AltecSystems.Revit.ServerExport.Models;
 using AltecSystems.Revit.ServerExport.Utils;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.Locks;
@@ -8,10 +12,6 @@ using Autodesk.RevitServer.Enterprise.Common.ClientServer.DataContract.SessionTo
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.Proxy;
 using Autodesk.RevitServer.Enterprise.Common.ClientServer.ServiceContract.Model;
 using Autodesk.Social.Services.Files.ServiceContracts.Client.Internals;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace AltecSystems.Revit.ServerExport.Services
 {
@@ -36,7 +36,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         public bool Export()
         {
-            var lockStatus = LockData(out EpisodeGuid creationDate);
+            LockData(out EpisodeGuid creationDate);
             var fileList = GetFileList();
 
             foreach (var fileName in fileList)
@@ -65,7 +65,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
                 return PerformDownload(proxy, sourceFile, targetFile, creationDate);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -120,7 +120,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         private LockStatus LockData(out EpisodeGuid creationDate)
         {
-            var sessionToken =  CreateServiceModelSessionToken();
+            var sessionToken = CreateServiceModelSessionToken();
 
             uint lockOptions = 129u;
 
@@ -133,8 +133,10 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         private ServiceModelSessionToken CreateServiceModelSessionToken()
         {
-            ServiceModelSessionToken serviceModelSessionToken = new ServiceModelSessionToken(_modelIdentity, _credential.UserName, _credential.SsoUserName, Environment.MachineName, Guid.NewGuid().ToString());
-            serviceModelSessionToken.ModelLocation = _credential.ModelLocation;
+            ServiceModelSessionToken serviceModelSessionToken = new ServiceModelSessionToken(_modelIdentity, _credential.UserName, _credential.SsoUserName, Environment.MachineName, Guid.NewGuid().ToString())
+            {
+                ModelLocation = _credential.ModelLocation
+            };
             return serviceModelSessionToken;
         }
 
@@ -143,7 +145,7 @@ namespace AltecSystems.Revit.ServerExport.Services
             return ProxyProvider.CreateProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
         }
 
-        private IClientProxy<IModelService> GetRoutedProxy(string viaNode)
+        private IClientProxy<IModelService> GetRoutedProxy()
         {
             return ProxyProvider.CreateProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
         }

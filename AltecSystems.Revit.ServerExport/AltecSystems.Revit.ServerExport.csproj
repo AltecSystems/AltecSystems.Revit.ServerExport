@@ -123,7 +123,6 @@
     <Compile Include="Services\RestApiModelLoader.cs" />
     <Compile Include="Services\ProxyModelLoader.cs" />
     <Compile Include="Services\RvtService.cs" />
-    <Compile Include="Services\Serializator.cs" />
     <Compile Include="Services\SettingsManager.cs" />
     <Compile Include="Utils\SessionTokenGenerator.cs" />
     <Page Include="MainWindow.xaml">
