@@ -95,8 +95,23 @@ namespace AltecSystems.Revit.ServerExport
             Progress.IsVisibility = Visibility.Visible;
             Progress.IsIndeterminate = true;
 
-            var loader = new ProxyModelLoader(Settings);
-            await loader.LoadModelAsync(Nodes, Progress);
+            try
+            {
+                var loader = new ProxyModelLoader(Settings);
+                await loader.LoadModelAsync(Nodes, Progress);
+            }
+            catch (ProxyGenerationException ex)
+            {
+                MessageBox.Show($"Не удалось создать соединение с revit server версии {Settings.CurrentSelectionServerVersion}");
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
             Progress.IsVisibility = Visibility.Collapsed;
         }
