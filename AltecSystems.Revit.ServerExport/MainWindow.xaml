@@ -42,14 +42,6 @@
             <StackPanel>
                 <DockPanel>
                     <Label
-                        Style="{StaticResource defaultLabelStyle}"
-                        Content="Путь на сервере:" />
-                    <TextBox
-                        Style="{StaticResource defaultTextBoxStyle}"
-                        Text="{Binding Settings.RevitServerRootPath}" />
-                </DockPanel>
-                <DockPanel>
-                    <Label
                         Content="Cохранить в:"
                         Style="{StaticResource defaultLabelStyle}" />
                     <TextBox

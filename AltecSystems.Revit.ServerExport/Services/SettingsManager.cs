@@ -52,7 +52,6 @@ namespace AltecSystems.Revit.ServerExport.Services
             return new SettingsModel()
             {
                 SavePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                RevitServerRootPath = @"E:\ProgramData\Revit server",
                 ServerHost = "192.168.1.10",
             };
         }

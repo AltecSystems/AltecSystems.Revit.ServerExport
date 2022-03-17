@@ -128,7 +128,8 @@ namespace AltecSystems.Revit.ServerExport.Services
 
             IClientProxy<IModelService> bufferedProxy = GetBufferedProxy();
             IModelService proxy = bufferedProxy.Proxy;
-            return proxy.LockData(sessionToken, lockOptions, bAllowBecomeNonExclusive: true, localModelVersion, out creationDate);
+
+            return proxy.LockData(sessionToken, lockOptions, bAllowBecomeNonExclusive: false, localModelVersion, out creationDate);
         }
 
         private ServiceModelSessionToken CreateServiceModelSessionToken()
@@ -141,11 +142,6 @@ namespace AltecSystems.Revit.ServerExport.Services
         }
 
         private IClientProxy<IModelService> GetStreamedProxy()
-        {
-            return ProxyProvider.CreateProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
-        }
-
-        private IClientProxy<IModelService> GetRoutedProxy()
         {
             return ProxyProvider.CreateProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
         }
