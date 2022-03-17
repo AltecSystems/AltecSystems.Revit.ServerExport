@@ -18,7 +18,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         public ProxyModelLoader(SettingsModel settings)
         {
-            _connectionModel = new ConnectionModel() { RevitServerRootPath = settings.RevitServerRootPath, ServerHost = settings.ServerHost, RevitVersion = settings.CurrentSelectionServerVersion };
+            _connectionModel = new ConnectionModel() { ServerHost = settings.ServerHost, RevitVersion = settings.CurrentSelectionServerVersion };
             _bufferedProxy = GetBufferedProxy().Proxy;
         }
 
@@ -27,7 +27,10 @@ namespace AltecSystems.Revit.ServerExport.Services
             var foldersAndModels = await Task<FoldersAndModels>.Factory.StartNew(() =>
             {
                 var sessionToken = SessionTokenGenerator.CreateServiceSessionToken();
-                _bufferedProxy.ListSubFoldersAndModels(sessionToken, relativeFolderPath, out var folders, out var models);
+                if (!_bufferedProxy.ListSubFoldersAndModels(sessionToken, relativeFolderPath, out var folders, out var models))
+                {
+                    throw new System.ArgumentException("Не удалось получить папки и модели.");
+                }
                 var result = new FoldersAndModels(ParseList(folders), ParseList(models));
                 return result;
             });
@@ -67,8 +70,12 @@ namespace AltecSystems.Revit.ServerExport.Services
             }
             foreach (var item in foldersAndModels.SubFolders)
             {
-                var node = new Node() { Text = item, Parent = parent, Path = path + "\\" + item };
                 string url = path + "\\" + item;
+                if (string.IsNullOrWhiteSpace(path))
+                {
+                    url = item;
+                }
+                var node = new Node() { Text = item, Parent = parent, Path = url };
 
                 nodes.Add(node);
                 progress.CurrentProgress++;
@@ -78,7 +85,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         public async Task LoadModelAsync(ObservableCollection<Node> nodes, ProgressModel progress)
         {
-            await LoadModelAsync(nodes, null, _connectionModel.RevitServerRootPath, progress);
+            await LoadModelAsync(nodes, null, "", progress);
         }
     }
 }
