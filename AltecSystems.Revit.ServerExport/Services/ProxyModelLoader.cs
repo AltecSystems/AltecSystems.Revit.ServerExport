@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -27,7 +27,10 @@ namespace AltecSystems.Revit.ServerExport.Services
             var foldersAndModels = await Task<FoldersAndModels>.Factory.StartNew(() =>
             {
                 var sessionToken = SessionTokenGenerator.CreateServiceSessionToken();
-                _bufferedProxy.ListSubFoldersAndModels(sessionToken, relativeFolderPath, out var folders, out var models);
+                if (!_bufferedProxy.ListSubFoldersAndModels(sessionToken, relativeFolderPath, out var folders, out var models))
+                {
+                    throw new System.ArgumentException("Не удалось получить папки и модели.");
+                }
                 var result = new FoldersAndModels(ParseList(folders), ParseList(models));
                 return result;
             });

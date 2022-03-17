@@ -1,6 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Windows;
@@ -8,12 +10,12 @@ using System.Windows.Input;
 using AltecSystems.Revit.ServerExport.Command;
 using AltecSystems.Revit.ServerExport.Models;
 using AltecSystems.Revit.ServerExport.Services;
+using Autodesk.RevitServer.Enterprise.Common.ClientServer.Helper.Exceptions;
 
 namespace AltecSystems.Revit.ServerExport
 {
     internal class ServerExportViewModel : NotifyPropertyChangedBase
     {
-        public ICommand DestinCommand { get; }
         public ICommand ExportCommand { get; }
         public ICommand LoadModelCommand { get; }
 
@@ -30,7 +32,6 @@ namespace AltecSystems.Revit.ServerExport
             _settingsManager = new SettingsManager();
             Settings = _settingsManager.GetSettings();
             Nodes = new ObservableCollection<Node>();
-            DestinCommand = new RelayCommand(null, null);
             ExportCommand = new RelayCommand(Export, null);
             LoadModelCommand = new RelayCommand(StartLoadModelAsync, null);
             Progress = new ProgressModel();
@@ -48,11 +49,11 @@ namespace AltecSystems.Revit.ServerExport
                 {
                     export.Export();
                 }
-                catch (FaultException)
+                catch (FaultException ex)
                 {
                     MessageBox.Show("Произошла ошибка при выгрузке. Проверьте версию revit");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     MessageBox.Show("Произошла ошибка при выгрузке.");
                 }
@@ -82,7 +83,7 @@ namespace AltecSystems.Revit.ServerExport
             return Path.Combine(Settings.SavePath, modelPath);
         }
 
-        private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             _settingsManager.SaveSettings(Settings);
         }
