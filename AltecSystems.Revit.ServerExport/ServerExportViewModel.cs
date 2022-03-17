@@ -79,7 +79,7 @@ namespace AltecSystems.Revit.ServerExport
 
         private string GetSavePath(string modelPath)
         {
-            return modelPath.Replace(Settings.RevitServerRootPath, Settings.SavePath);
+            return Path.Combine(Settings.SavePath, modelPath);
         }
 
         private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

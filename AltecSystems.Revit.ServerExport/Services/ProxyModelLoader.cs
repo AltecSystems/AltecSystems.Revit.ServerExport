@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         public ProxyModelLoader(SettingsModel settings)
         {
-            _connectionModel = new ConnectionModel() { RevitServerRootPath = settings.RevitServerRootPath, ServerHost = settings.ServerHost, RevitVersion = settings.CurrentSelectionServerVersion };
+            _connectionModel = new ConnectionModel() { ServerHost = settings.ServerHost, RevitVersion = settings.CurrentSelectionServerVersion };
             _bufferedProxy = GetBufferedProxy().Proxy;
         }
 
@@ -67,8 +67,12 @@ namespace AltecSystems.Revit.ServerExport.Services
             }
             foreach (var item in foldersAndModels.SubFolders)
             {
-                var node = new Node() { Text = item, Parent = parent, Path = path + "\\" + item };
                 string url = path + "\\" + item;
+                if (string.IsNullOrWhiteSpace(path))
+                {
+                    url = item;
+                }
+                var node = new Node() { Text = item, Parent = parent, Path = url };
 
                 nodes.Add(node);
                 progress.CurrentProgress++;
@@ -78,7 +82,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
         public async Task LoadModelAsync(ObservableCollection<Node> nodes, ProgressModel progress)
         {
-            await LoadModelAsync(nodes, null, _connectionModel.RevitServerRootPath, progress);
+            await LoadModelAsync(nodes, null, "", progress);
         }
     }
 }
