@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -89,6 +89,9 @@ namespace AltecSystems.Revit.ServerExport
 
         private async void StartLoadModelAsync(object commandParam)
         {
+            Nodes.Clear();
+            Progress.Clear();
+
             Progress.IsVisibility = Visibility.Visible;
             Progress.IsIndeterminate = true;
 

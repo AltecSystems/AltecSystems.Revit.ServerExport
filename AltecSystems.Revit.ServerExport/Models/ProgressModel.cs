@@ -42,5 +42,11 @@ namespace AltecSystems.Revit.ServerExport.Models
         public Visibility IsVisibility { get => _isVisible; set => SetField(ref _isVisible, value, nameof(IsVisibility)); }
 
         public string StatusText => IsIndeterminate ? "Ожидание загрузки" : $"Загружено {CurrentProgress} из {Max}";
+
+        public void Clear()
+        {
+            CurrentProgress = 0;
+            Max = 0;
+        }
     }
 }
