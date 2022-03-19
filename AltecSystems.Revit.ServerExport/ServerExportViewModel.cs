@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Resources;
 using System.ServiceModel;
 using System.Windows;
 using System.Windows.Input;
