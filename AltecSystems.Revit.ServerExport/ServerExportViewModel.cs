@@ -51,14 +51,14 @@ namespace AltecSystems.Revit.ServerExport
                 }
                 catch (FaultException ex)
                 {
-                    MessageBox.Show("Произошла ошибка при выгрузке. Проверьте версию revit");
+                    MessageBox.Show(Properties.ExceptionMessages.RevitServerVersionException);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Произошла ошибка при выгрузке.");
+                    MessageBox.Show(Properties.ExceptionMessages.UploadinModelExceprion);
                 }
             }
-            MessageBox.Show("Выгрузка завершена");
+            MessageBox.Show(Properties.ApplicationMessages.UploadCompletedMessage);
         }
 
         private IEnumerable<ExportCredential> GetExportCredentials(ObservableCollection<Node> nodes, List<ExportCredential> credentials)
@@ -103,7 +103,7 @@ namespace AltecSystems.Revit.ServerExport
             }
             catch (ProxyGenerationException ex)
             {
-                MessageBox.Show($"Не удалось создать соединение с revit server версии {Settings.CurrentSelectionServerVersion}");
+                MessageBox.Show(string.Format(Properties.ExceptionMessages.ProxyGenerationException, Settings.CurrentSelectionServerVersion));
             }
             catch (ArgumentException ex)
             {
