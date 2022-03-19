@@ -29,7 +29,7 @@ namespace AltecSystems.Revit.ServerExport.Services
                 var sessionToken = SessionTokenGenerator.CreateServiceSessionToken();
                 if (!_bufferedProxy.ListSubFoldersAndModels(sessionToken, relativeFolderPath, out var folders, out var models))
                 {
-                    throw new System.ArgumentException("Не удалось получить папки и модели.");
+                    throw new System.ApplicationException(Properties.ExceptionMessages.FailedGetFoldersAndModelsException);
                 }
                 var result = new FoldersAndModels(ParseList(folders), ParseList(models));
                 return result;

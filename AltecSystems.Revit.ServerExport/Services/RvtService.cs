@@ -41,7 +41,7 @@ namespace AltecSystems.Revit.ServerExport.Services
                 try
                 {
                     ModelBasicFileInfoStream modelBasicFileInfoStream = new ModelBasicFileInfoStream(dataFormatVersion);
-                    var basicFileInfo = ReadFromRVTFile(strRvtFilePath);
+                    BasicFileInfo basicFileInfo = ReadFromRVTFile(strRvtFilePath);
                     if (basicFileInfo != null)
                     {
                         basicFileInfo.CentralIdentity = centralIdentity;
