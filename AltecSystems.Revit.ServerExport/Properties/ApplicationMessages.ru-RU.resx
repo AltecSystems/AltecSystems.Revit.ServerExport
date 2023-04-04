@@ -126,4 +126,10 @@
   <data name="WaitingForDownloadMessage" xml:space="preserve">
     <value>Ожидание загрузки</value>
   </data>
+  <data name="ErrorCaptionBrokenFile" xml:space="preserve">
+    <value>Невозможно завершить операцию</value>
+  </data>
+  <data name="ErrorTextBrokenFile" xml:space="preserve">
+    <value>Возможно файл поврежден</value>
+  </data>
 </root>

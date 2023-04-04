@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using AltecSystems.Revit.ServerExport.Extensions;
 using AltecSystems.Revit.ServerExport.Models;
 using AltecSystems.Revit.ServerExport.Utils;
@@ -31,7 +32,18 @@ namespace AltecSystems.Revit.ServerExport.Services
             var sessionToken = SessionTokenGenerator.CreateServiceSessionToken();
             IClientProxy<IModelService> bufferedProxy = GetBufferedProxy();
             IModelService proxy = bufferedProxy.Proxy;
-            return proxy.IdentifyModel(sessionToken, _credential.ModelPath, true);
+            try
+            {
+                return proxy.IdentifyModel(sessionToken, _credential.ModelPath, true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error: {ex.Message}" +
+                    $"\n{Properties.ApplicationMessages.ErrorTextBrokenFile}:\n{_credential.ModelPath}",
+                    $"{Properties.ApplicationMessages.ErrorCaptionBrokenFile}");
+                throw;
+            }
         }
 
         public bool Export()
@@ -46,6 +58,7 @@ namespace AltecSystems.Revit.ServerExport.Services
 
                 DownloadFile(sourceFile, targetFile, creationDate);
             }
+
             return CreateRvt();
         }
 
@@ -53,7 +66,13 @@ namespace AltecSystems.Revit.ServerExport.Services
         {
             var rvtService = new RvtService();
             string centralModelFullPath = _credential.ModelLocation.GetUserVisiblePathFromModelLocation();
-            return rvtService.GenerateRvtFileFromModelDataFolder(_credential.TempTargetFolder, DataFormatVersion.Latest, _credential.SavePath, true, true, _modelIdentity, centralModelFullPath);
+            return rvtService.GenerateRvtFileFromModelDataFolder(_credential.TempTargetFolder,
+                                                                 DataFormatVersion.Latest,
+                                                                 _credential.SavePath,
+                                                                 true,
+                                                                 true,
+                                                                 _modelIdentity,
+                                                                 centralModelFullPath);
         }
 
         public bool DownloadFile(string sourceFile, string targetFile, EpisodeGuid creationDate)
@@ -71,20 +90,26 @@ namespace AltecSystems.Revit.ServerExport.Services
             }
         }
 
-        private bool PerformDownload(IModelService proxy, string sourceFile, string targetFile, EpisodeGuid creationDate)
+        private bool PerformDownload(IModelService proxy,
+                                     string sourceFile,
+                                     string targetFile,
+                                     EpisodeGuid creationDate)
         {
             var sessionToken = CreateServiceModelSessionToken();
-            using (FileDownloadMessageStream fileDownloadMessageStream = proxy.DownloadFile(new FileDownloadRequestMessage(sessionToken, creationDate, sourceFile)))
+            using (FileDownloadMessageStream fileDownloadMessageStream =
+                   proxy.DownloadFile(new FileDownloadRequestMessage(sessionToken, creationDate, sourceFile)))
             {
                 if (fileDownloadMessageStream.Stream == null)
                 {
                     throw new Exception();
                 }
+
                 string directoryName = Path.GetDirectoryName(targetFile);
                 if (!string.IsNullOrEmpty(directoryName))
                 {
                     Directory.CreateDirectory(directoryName);
                 }
+
                 DateTime now = DateTime.Now;
                 using (FileStream fileStream = File.Open(targetFile, FileMode.OpenOrCreate, FileAccess.Write))
                 {
@@ -97,11 +122,12 @@ namespace AltecSystems.Revit.ServerExport.Services
                         {
                             fileStream.Write(array, 0, num);
                         }
-                    }
-                    while (num > 0);
+                    } while (num > 0);
                 }
+
                 fileDownloadMessageStream.Stream.Close();
             }
+
             return true;
         }
 
@@ -124,31 +150,43 @@ namespace AltecSystems.Revit.ServerExport.Services
 
             uint lockOptions = 129u;
 
-            ModelVersion localModelVersion = new ModelVersion(new VersionNumber(0), new ModelHistoryCheckInfo(EpisodeGuid.Invalid));
+            ModelVersion localModelVersion =
+                new ModelVersion(new VersionNumber(0), new ModelHistoryCheckInfo(EpisodeGuid.Invalid));
 
             IClientProxy<IModelService> bufferedProxy = GetBufferedProxy();
             IModelService proxy = bufferedProxy.Proxy;
 
-            return proxy.LockData(sessionToken, lockOptions, bAllowBecomeNonExclusive: false, localModelVersion, out creationDate);
+            return proxy.LockData(sessionToken,
+                                  lockOptions,
+                                  bAllowBecomeNonExclusive: false,
+                                  localModelVersion,
+                                  out creationDate);
         }
 
         private ServiceModelSessionToken CreateServiceModelSessionToken()
         {
-            ServiceModelSessionToken serviceModelSessionToken = new ServiceModelSessionToken(_modelIdentity, _credential.UserName, _credential.SsoUserName, Environment.MachineName, Guid.NewGuid().ToString())
-            {
-                ModelLocation = _credential.ModelLocation
-            };
+            ServiceModelSessionToken serviceModelSessionToken =
+                new ServiceModelSessionToken(_modelIdentity,
+                                             _credential.UserName,
+                                             _credential.SsoUserName,
+                                             Environment.MachineName,
+                                             Guid.NewGuid().ToString())
+                {
+                    ModelLocation = _credential.ModelLocation
+                };
             return serviceModelSessionToken;
         }
 
         private IClientProxy<IModelService> GetStreamedProxy()
         {
-            return ProxyProvider.CreateProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
+            return ProxyProvider.CreateProxyInstance(_credential.RevitVersion)
+                .GetStreamedProxy<IModelService>(_credential.HostIp);
         }
 
         private IClientProxy<IModelService> GetBufferedProxy()
         {
-            return ProxyProvider.CreateProxyInstance(_credential.RevitVersion).GetStreamedProxy<IModelService>(_credential.HostIp);
+            return ProxyProvider.CreateProxyInstance(_credential.RevitVersion)
+                .GetStreamedProxy<IModelService>(_credential.HostIp);
         }
     }
 }
