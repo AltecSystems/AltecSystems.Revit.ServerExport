@@ -14,7 +14,7 @@ namespace AltecSystems.Revit.ServerExport.Models
         public string ServerHost { get => _serverHost; set => SetField(ref _serverHost, value, nameof(ServerHost)); }
 
         [JsonIgnore]
-        public List<string> ServerVersion { get; } = new List<string> { "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022" };
+        public List<string> ServerVersion { get; } = new List<string> { "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023" };
 
         public string CurrentSelectionServerVersion { get => _currentSelectionServerVersion; set => SetField(ref _currentSelectionServerVersion, value, nameof(CurrentSelectionServerVersion)); }
     }
